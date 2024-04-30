@@ -1,8 +1,34 @@
 import numpy as np
-a = [1,1.6, 0]
-# a = np.mgrid[:3, :3, :3][0]
-f = np.fft.fftn(a )
 
-print(a)
-print(f)
+import matplotlib.pyplot as plt
 
+# Time period
+
+t = np.arange(0, 10, 0.01);
+# print(t)
+# Create a sine wave with multiple frequencies(1 Hz, 2 Hz and 4 Hz)
+
+a = np.sin(2*np.pi*t) + np.sin(2*2*np.pi*t) + np.sin(4*2*np.pi*t);
+# print(a)
+
+# Do a Fourier transform on the signal
+
+tx  = np.fft.fft(a);
+
+# Do an inverse Fourier transform on the signal
+
+itx = np.fft.ifft(tx);
+
+# Plot the original sine wave using inverse Fourier transform
+
+plt.plot(itx, a);
+
+plt.title("Sine wave plotted using inverse Fourier transform");
+
+plt.xlabel('Time')
+
+plt.ylabel('Amplitude')
+
+plt.grid(True)
+
+plt.show();
