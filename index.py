@@ -24,3 +24,6 @@ print(ifft(2))
 #         c[t] = c[t] + b[k]*np.exp(2*np.pi*1j*k*t/n)/n
 # print(c)
 
+a2 = np.array([[0,1,0], [1, 1.1, 1.2], [1, 1, 1]])
+b2 = np.fft.fftn(a2)
+print(b2)
