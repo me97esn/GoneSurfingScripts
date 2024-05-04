@@ -1,20 +1,15 @@
 import numpy as np
-import scipy.fft as scipy_fft
 
-
-a = [1, 1.6, 0 ]
-# a = np.mgrid[:3, :3, :3][0]
-f = np.fft.fftn(a )
-
-
-print('cos:', scipy_fft.dct(a))
-print('sin:', scipy_fft.idst(a))
-print()
-ift = np.fft.ifftn(f)
-print()
-# print(f.complex)
-print("Original values:\n",a)
-print()
-print("Fouriere transform: \n",f)
-print("Inverse fft: \n", ift)
+a = np.array([1, 1.6, 0])
+n = len(a)
+print(a)
+b = np.fft.fft(a)
+print(b)
+# fill an array with zero imaginary numbers
+c = np.linspace(0, n-1, num=n)*1.0j
+for t in range(n):
+    c[t] = 0.0
+    for k in range(n):
+        c[t] = c[t] + b[k]*np.exp(2*np.pi*1j*k*t/n)/n
+print(c)
 
