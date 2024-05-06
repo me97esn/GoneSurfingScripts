@@ -59,10 +59,16 @@ random_1darray = np.random.randint(5, size=100)
 # for array in result:
 #     print(array)
 
+frequencies = np.fft.fftn(random_1darray)
+print(frequencies)
+filtered_frequencies = [frequencies[i] if i < 90 else 0 for i in range(len(frequencies))]
+filtered = np.fft.ifftn(filtered_frequencies)
+
 # plotting
 x = np.arange(1, len(random_1darray)+1)
 plt.title("Line graph") 
 plt.xlabel("X axis") 
 plt.ylabel("Y axis") 
 plt.plot(x, random_1darray, color ="red") 
+plt.plot(x, [a  for a in filtered], color ="blue") 
 plt.show()
