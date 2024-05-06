@@ -27,9 +27,9 @@ def ifft(t, fourierCoefficients):
 
 
 
-print(ifft(0, b))
-print(ifft(1, b))
-print(ifft(2, b))
+# print(ifft(0, b))
+# print(ifft(1, b))
+# print(ifft(2, b))
 
 # fill an array with zero imaginary numbers
 # c = np.linspace(0, n-1, num=n)*1.0j
@@ -45,11 +45,14 @@ b2 = np.fft.fftn(random_2darray)
 
 print("-----------------")
 print("Original 2d array\n",random_2darray)
-print("Fouriere transformed 2d array:\n",b2)
+# print("Fouriere transformed 2d array:\n",b2)
 # print(ifft2(1, 1, b2))
 print('-----------------')
+print("2,1:" ,ifft2(2, 1, b2), ", should be: ", random_2darray[2][1])
+
 result = [[(ifft2(i, j, b2)) for i in range(random_2darray[0].size )] for j in range(random_2darray.size)]
 
-print(result)
-for array in result:
-    print(array)
+
+# print(result)
+# for array in result:
+#     print(array)
