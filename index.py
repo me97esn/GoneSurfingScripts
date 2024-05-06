@@ -39,15 +39,17 @@ print(ifft(2, b))
 #         c[t] = c[t] + b[k]*np.exp(2*np.pi*1j*k*t/n)/n
 # print(c)
 
-a2 = np.array([[0,1,0], [1, 1.1, 1.2], [1, 1, 1]])
-b2 = np.fft.fftn(a2)
+random_2darray = np.random.randint(5, size=(5, 3))
+# a2 = np.array([[0,1,0], [1, 1.1, 1.2], [1, 1, 1]])
+b2 = np.fft.fftn(random_2darray)
 
 print("-----------------")
-print("Original 2d array\n",a2)
+print("Original 2d array\n",random_2darray)
 print("Fouriere transformed 2d array:\n",b2)
 # print(ifft2(1, 1, b2))
 print('-----------------')
-result = [[(ifft2(i, j, b2)) for i in range(3)] for j in range(3)]
+result = [[(ifft2(i, j, b2)) for i in range(random_2darray[0].size )] for j in range(random_2darray.size)]
 
+print(result)
 for array in result:
     print(array)
