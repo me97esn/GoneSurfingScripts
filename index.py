@@ -48,4 +48,6 @@ print("Fouriere transformed 2d array:\n",b2)
 # print(ifft2(1, 1, b2))
 print('-----------------')
 result = [[(ifft2(i, j, b2)) for i in range(3)] for j in range(3)]
-print(result)
+
+for array in result:
+    print(array)
