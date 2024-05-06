@@ -47,7 +47,5 @@ print("Original 2d array\n",a2)
 print("Fouriere transformed 2d array:\n",b2)
 # print(ifft2(1, 1, b2))
 print('-----------------')
-for i in range(3):
-    for j in range(3):
-        print(ifft2(i, j, b2))
-
+result = [(ifft2(i, j, b2)) for i in range(3) for j in range(3)]
+print(result)
