@@ -52,7 +52,7 @@ random_2darray = np.random.randint(5, size=(10, 10))
 # print()
 # result = [[(ifft2(i, j, b2, random_2darray.shape[0], random_2darray.shape[1])) for i in range(random_2darray[0].size )] for j in range(random_2darray.size)]
 
-random_1darray = np.random.randint(5, size=10)
+random_1darray = np.random.randint(5, size=100)
 
 # len(result)
 # print(result)
