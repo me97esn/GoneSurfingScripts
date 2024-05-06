@@ -9,10 +9,8 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY):
     ""
     result = 0.0j
     M = len(fourierCoefficients)
+    M = 3
     N = len(fourierCoefficients[0])
-    print(lenX, lenY)
-    # lenX = M 
-    # lenY = N
 
     for m in range(M):
         for n in range(N):
