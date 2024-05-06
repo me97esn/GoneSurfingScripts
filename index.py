@@ -13,7 +13,7 @@ def ifft2(x, y, fourierCoefficients):
 
     for m in range(M):
         for n in range(N):
-            result = result + fourierCoefficients[m][n]*np.exp(2*np.pi*1j*(m*x/M))/N
+            result = result + fourierCoefficients[m][n]*np.exp(2*np.pi*1j*(m*x/M + n*y/N))/(M*N)
     return result.real
 
 
