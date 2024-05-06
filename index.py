@@ -8,12 +8,13 @@ b = np.fft.fft(a)
 def ifft2(x, y, fourierCoefficients, lenX, lenY):
     ""
     result = 0.0j
-    M = len(fourierCoefficients)
-    N = len(fourierCoefficients[0])
+    # M = len(fourierCoefficients)
+    # N = len(fourierCoefficients[0])
 
-    for m in range(M):
-        for n in range(N):
-            result = result + fourierCoefficients[m][n]*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+    for m in range(lenX):
+        for n in range(lenY):
+            # if m  <= 6:
+                result = result + fourierCoefficients[m][n]*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
     return result.real
 
 
