@@ -2653,7 +2653,7 @@ wave_samples = [
 
 frequencies = np.fft.fftn(wave_samples)
 print(frequencies)
-filtered_frequencies = [frequencies[i] if i < 50 else 0 for i in range(len(frequencies))]
+filtered_frequencies = [frequencies[i] if i < 100 else 0 for i in range(len(frequencies))]
 filtered = np.fft.ifftn(filtered_frequencies)
 
 # plotting
