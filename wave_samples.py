@@ -1,3 +1,6 @@
+def samples2d():
+    return [samples(),samples()]
+
 def samples():
     return [
         17.3745,
