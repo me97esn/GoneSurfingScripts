@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import json
 import matplotlib.animation as animation
 
-f = open('samples.json')
+f = open('wave_samples.json')
 
 fig = plt.figure(figsize = (120,100))
 ax = plt.axes(projection='3d')
