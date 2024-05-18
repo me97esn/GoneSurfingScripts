@@ -4,8 +4,11 @@ import matplotlib.pyplot as plt
 import json
 f = open('samples.json')
 
-fig = plt.figure(figsize = (12,10))
+fig = plt.figure(figsize = (120,100))
 ax = plt.axes(projection='3d')
+# ax.set_xlim([xmin, xmax])
+ax.set_zlim([0, 50])
+# These dimensions have to match the dimensions of the data
 
 x = np.arange(0, 100, 1)
 y = np.arange(0, 100,1) 
