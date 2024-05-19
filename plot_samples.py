@@ -28,6 +28,8 @@ while True:
        ax.clear()
        ax.set_xlabel('Frame: ' + str(i+start_frame))
        ax.set_zlim([0, 100])
+       ax.set_ylim([0, 150])
+       ax.set_xlim([0, 150])
        Z = np.array(data[i])
        ax.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
        plt.pause(0.01)
