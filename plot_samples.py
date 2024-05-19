@@ -22,10 +22,11 @@ surf = ax.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
 ax.set_xlabel('x', labelpad=20)
 ax.set_ylabel('y', labelpad=20)
 ax.set_zlabel('z', labelpad=200)
-
+start_frame = 752
 while True:
    for i in range(1, len(data)):
        ax.clear()
+       ax.set_xlabel('Frame: ' + str(i+start_frame))
        ax.set_zlim([0, 100])
        Z = np.array(data[i])
        ax.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
