@@ -25,6 +25,8 @@ ax.set_ylabel('y', labelpad=20)
 ax.set_zlabel('z', labelpad=200)
 
 for i in range(1, len(data)):
+    ax.clear()
+    ax.set_zlim([0, 50])
     Z = np.array(data[i])
     ax.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
     plt.pause(0.01)
