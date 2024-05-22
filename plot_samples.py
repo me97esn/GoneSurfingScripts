@@ -13,7 +13,7 @@ def filter_frequencies(data):
         for ii,y in enumerate(z):
             y_arr = []
             for iii,x in enumerate(y):
-                if i < 5 or i > 5570:
+                if ii < 20 or ii > 2570:
                     y_arr.append(x)
                 else:
                     y_arr.append(0)
@@ -42,8 +42,6 @@ x = np.arange(0, len(data[0][0]), 1)
 y = np.arange(0, len(data[0]),1)
 
 X, Y = np.meshgrid(x, y)
-Z = np.array(data[0])
-surf = samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
 
 # Set axes label
 samples_3d_plot.set_xlabel('x', labelpad=20)
@@ -55,7 +53,6 @@ while True:
         # plot 1, samples
 
         samples_3d_plot.clear()
-        filtered_3d_plot.clear()
         samples_3d_plot.set_xlabel('Frame: ' + str(i+start_frame))
 
         # get the 2d array of all of the samples for this frame
@@ -65,7 +62,7 @@ while True:
         # plot 2, fft
         filtered_3d_plot.clear()
         Z2 = np.array(filtered_data[i])
-        # filtered_3d_plot.plot_wireframe(X, Y, Z, rstride=10, cstride=10)
+        # filtered_3d_plot.plot_wireframe(X, Y, Z2, rstride=10, cstride=10)
         filtered_3d_plot.plot_surface(X, Y, Z2, cmap = plt.cm.cividis)
 
         plt.pause(0.01)
