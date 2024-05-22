@@ -13,7 +13,7 @@ def filter_frequencies(data):
         for ii,y in enumerate(z):
             y_arr = []
             for iii,x in enumerate(y):
-                if ii < 20 or ii > 2570:
+                if  (ii < 20 or ii > 2570):
                     y_arr.append(x)
                 else:
                     y_arr.append(0)
