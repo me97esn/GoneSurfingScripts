@@ -12,18 +12,12 @@ f = open('wave_samples.json')
 
 data = json.load(f)
 
+# 3d plot of examples
 ax0 = fig.add_subplot(1, 2, 2, projection='3d')
-X0, Y0, Z0 = get_test_data(0.05)
-ax0.plot_wireframe(X0, Y0, Z0, rstride=10, cstride=10)
 
 # 3d plot of the samples
-# fig = plt.figure(figsize = (len(data[0][0]),len(data[0])))
-# fig, (ax1, ax2) = plt.subplots(2, 1)
-# fig.suptitle('3D plot of the samples')
 # set up the Axes for the first plot
 ax = fig.add_subplot(1, 2, 1, projection='3d')
-# ax = plt.axes(projection='3d')
-# ax.set_xlim([xmin, xmax])
 
 x = np.arange(0, len(data[0][0]), 1)
 y = np.arange(0, len(data[0]),1)
@@ -39,18 +33,22 @@ ax.set_zlabel('z', labelpad=200)
 start_frame = 752
 while True:
     for i in range(1, len(data)):
-       ax.clear()
-       ax.set_xlabel('Frame: ' + str(i+start_frame))
-       ax.set_zlim([0, 100])
-       ax.set_ylim([0, 150])
-       ax.set_xlim([0, 150])
-       Z = np.array(data[i])
-       ax.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
-       plt.pause(0.01)
-       # plt.pause(1000)
+        # plot 1
+        ax.clear()
+        ax.set_xlabel('Frame: ' + str(i+start_frame))
+        ax.set_zlim([0, 100])
+        ax.set_ylim([0, 150])
+        ax.set_xlim([0, 150])
+        Z = np.array(data[i])
+        ax.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
 
+        # plot 2
+        X0, Y0, Z0 = get_test_data(0.05)
+        ax0.plot_wireframe(X0, Y0, Z0, rstride=10, cstride=10)
+
+        plt.pause(0.01)
 # fft
-# frequencies = np.fft.fftn(data)
+# frequ encies = np.fft.fftn(data)
 
 # filtered_frequencies = []
 # for i in range(len(frequencies)):
