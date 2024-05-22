@@ -8,18 +8,15 @@ from mpl_toolkits.mplot3d.axes3d import get_test_data
 def filter_frequencies(data):
     frequencies = np.fft.fftn(data)
     filtered_frequencies = []
-    for z in frequencies:
+    for i, z in enumerate(frequencies):
         z_arr = []
-        for y in z:
+        for ii,y in enumerate(z):
             y_arr = []
-            for x in y:
-                y_arr.append(x)
-                # if x < 20 or x > 2570:
-                #     x = 0
-                # if y < 20 or y > 2570:
-                #     y = 0
-                # if z < 20 or z > 2570:
-                #     z = 0
+            for iii,x in enumerate(y):
+                if i < 5 or i > 5570:
+                    y_arr.append(x)
+                else:
+                    y_arr.append(0)
             z_arr.append(y_arr)
         filtered_frequencies.append(z_arr)
     return np.fft.ifftn(filtered_frequencies)
@@ -33,10 +30,10 @@ data = json.load(f)
 filtered_data = filter_frequencies(data)
 
 
-ax0 = fig.add_subplot(1, 2, 2, projection='3d')
+filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
  
-for axis in [samples_3d_plot, ax0]:
+for axis in [samples_3d_plot, filtered_3d_plot]:
     axis.set_zlim([0, 100])
     axis.set_ylim([0, 150])
     axis.set_xlim([0, 150])
@@ -58,6 +55,7 @@ while True:
         # plot 1, samples
 
         samples_3d_plot.clear()
+        filtered_3d_plot.clear()
         samples_3d_plot.set_xlabel('Frame: ' + str(i+start_frame))
 
         # get the 2d array of all of the samples for this frame
@@ -65,9 +63,10 @@ while True:
         samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
 
         # plot 2, fft
-        ax0.clear()
+        filtered_3d_plot.clear()
         Z2 = np.array(filtered_data[i])
-        ax0.plot_wireframe(X, Y, Z, rstride=10, cstride=10)
+        # filtered_3d_plot.plot_wireframe(X, Y, Z, rstride=10, cstride=10)
+        filtered_3d_plot.plot_surface(X, Y, Z2, cmap = plt.cm.cividis)
 
         plt.pause(0.01)
 # fft
