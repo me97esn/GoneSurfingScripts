@@ -18,6 +18,11 @@ ax0 = fig.add_subplot(1, 2, 2, projection='3d')
 # 3d plot of the samples
 # set up the Axes for the first plot
 ax = fig.add_subplot(1, 2, 1, projection='3d')
+ 
+for axis in [ax, ax0]:
+    axis.set_zlim([0, 100])
+    axis.set_ylim([0, 150])
+    axis.set_xlim([0, 150])
 
 x = np.arange(0, len(data[0][0]), 1)
 y = np.arange(0, len(data[0]),1)
@@ -36,15 +41,14 @@ while True:
         # plot 1
         ax.clear()
         ax.set_xlabel('Frame: ' + str(i+start_frame))
-        ax.set_zlim([0, 100])
-        ax.set_ylim([0, 150])
-        ax.set_xlim([0, 150])
+
+        # get the 2d array of all of the samples for this frame
         Z = np.array(data[i])
         ax.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
 
         # plot 2
         X0, Y0, Z0 = get_test_data(0.05)
-        ax0.plot_wireframe(X0, Y0, Z0, rstride=10, cstride=10)
+        ax0.plot_wireframe(X, Y, Z, rstride=10, cstride=10)
 
         plt.pause(0.01)
 # fft
