@@ -5,7 +5,14 @@ import json
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d.axes3d import get_test_data
 
+
+
 def filter_frequencies(data):
+
+    num_of_frames = len(data)
+    num_of_rows = len(data[0])
+    num_of_columns = len(data[0][0])
+
     frequencies = np.fft.fftn(data)
     filtered_frequencies = []
     for i, z in enumerate(frequencies):
@@ -13,7 +20,7 @@ def filter_frequencies(data):
         for ii,y in enumerate(z):
             y_arr = []
             for iii,x in enumerate(y):
-                if  (ii < 20 or ii > 2570):
+                if  (iii < 20 or iii > num_of_columns - 20) :
                     y_arr.append(x)
                 else:
                     y_arr.append(0)
@@ -35,6 +42,10 @@ filtered_data = filter_frequencies(data)
 filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
 plot_2d = fig.add_subplot(2, 2, 2)
+
+print("Data length: ", len(data))
+print("Data[0] length: ", len(data[0]))
+print("Data[0][0] length: ", len(data[0][0]))
 # print(dir(samples_3d_plot))
     # axis.set_aspect("equal")
 
