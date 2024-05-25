@@ -34,6 +34,7 @@ filtered_data = filter_frequencies(data)
 
 filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
+plot_2d = fig.add_subplot(2, 2, 2)
 # print(dir(samples_3d_plot))
     # axis.set_aspect("equal")
 
@@ -54,11 +55,15 @@ while True:
 
         samples_3d_plot.clear()
         filtered_3d_plot.clear()
+        plot_2d.clear()
 
         for axis in [samples_3d_plot, filtered_3d_plot]:
             axis.set_zlim3d(0, 60)
             axis.set_ylim3d(0, 150)
             axis.set_xlim3d(0, 150)
+
+        plot_2d.set_ylim(0, 150)
+        plot_2d.set_xlim(0, 150)
 
         samples_3d_plot.set_xlabel('Frame: ' + str(i+start_frame))
 
@@ -69,8 +74,10 @@ while True:
         # plot 2, fft
         # filtered_3d_plot.clf()
         Z2 = np.array(filtered_data[i])
-        # filtered_3d_plot.plot_wireframe(X, Y, Z2, rstride=10, cstride=10)
         filtered_3d_plot.plot_surface(X, Y, Z2, cmap = plt.cm.cividis)
+
+        plot_2d.plot(data[i][0], color='blue')
+        plot_2d.plot(filtered_data[i][0], color='red')
 
         plt.pause(0.01)
 # fft
