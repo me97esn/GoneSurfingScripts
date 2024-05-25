@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d.axes3d import get_test_data
 
 
 
-def filter_frequencies(data):
+def filter_frequencies(data, include_number_of_columns = 30, include_number_of_rows = 30, include_number_of_frames = 30):
 
     num_of_frames = len(data)
     num_of_rows = len(data[0])
@@ -20,12 +20,13 @@ def filter_frequencies(data):
         for ii,y in enumerate(z):
             y_arr = []
             for iii,x in enumerate(y):
-                if  (iii < 20 or iii > num_of_columns - 20) :
+                if  (iii < include_number_of_columns or iii > num_of_columns - include_number_of_columns) and (ii < include_number_of_rows or ii > num_of_rows - include_number_of_rows)and (i < include_number_of_frames or i > num_of_frames - include_number_of_frames):
                     y_arr.append(x)
                 else:
                     y_arr.append(0)
             z_arr.append(y_arr)
         filtered_frequencies.append(z_arr)
+        # print(filtered_frequencies)
     return np.fft.ifftn(filtered_frequencies)
 
 # set up a figure twice as wide as it is tall
