@@ -1,9 +1,7 @@
 import numpy as np
-from mpl_toolkits import mplot3d
 import matplotlib.pyplot as plt
 import json
 import matplotlib.animation as animation
-from mpl_toolkits.mplot3d.axes3d import get_test_data
 
 
 
@@ -31,8 +29,6 @@ def filter_frequencies(data, include_number_of_columns = 30, include_number_of_r
 
 # set up a figure twice as wide as it is tall
 fig = plt.figure(figsize=plt.figaspect(0.5))
-# plt.rcParams["figure.figsize"] = [7.00, 3.50]
-# plt.rcParams["figure.autolayout"] = True
 
 f = open('wave_samples.json')
 
@@ -48,8 +44,6 @@ plot_2d_2 = fig.add_subplot(2, 2, 2)
 print("Data length: ", len(data))
 print("Data[0] length: ", len(data[0]))
 print("Data[0][0] length: ", len(data[0][0]))
-# print(dir(samples_3d_plot))
-    # axis.set_aspect("equal")
 
 x = np.arange(0, len(data[0][0]), 1)
 y = np.arange(0, len(data[0]),1)
@@ -100,13 +94,3 @@ while True:
         plot_2d_2.plot(filtered_data[i][30], color='red')
 
         plt.pause(0.01)
-# fft
-# frequ encies = np.fft.fftn(data)
-
-# filtered_frequencies = []
-# for i in range(len(frequencies)):
-#     if i < 20 or i > 2570:
-#         filtered_frequencies.append(frequencies[i])
-#     else:
-#         filtered_frequencies.append(0)
-
