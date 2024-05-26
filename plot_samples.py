@@ -9,13 +9,22 @@ data = json.load(f)
 
 def wave_height(frame, x, y):
     "TODO: should use my own ifft implementation here!"
+    # return 0.0
     return  data[frame][x][y]
 
 def recreate_samples(frequencies):
     "Loop through all of the frequencies and recreate the samples"
     result = []
-    for z,y,x in frequencies:
-        result.append(wave_height(z, x, y))
+    for zi, z in enumerate(frequencies):
+        frame = []
+        result.append(frame)
+        for yi, y in enumerate(z):
+            row = []
+            frame.append(row)
+            for xi, x in enumerate(y):
+                row.append(wave_height(zi, xi, yi))
+    return result   
+
 
 def filter_frequencies(data, include_number_of_columns = 30, include_number_of_rows = 30, include_number_of_frames = 30):
     "Convert to frequency domain and filter out most of the middle frequencies. Then convert back to time domain."
@@ -38,14 +47,19 @@ def filter_frequencies(data, include_number_of_columns = 30, include_number_of_r
             z_arr.append(y_arr)
         filtered_frequencies.append(z_arr)
         # print(filtered_frequencies)
+        # TODO: most of the frequencies are zero. How should I skip them, so that they won't waste memory?
     return filtered_frequencies
 
 # set up a figure twice as wide as it is tall
 fig = plt.figure(figsize=plt.figaspect(0.5))
 
+print("Data length: ", len(data))
+print("Data[0] length: ", len(data[0]))
+print("Data[0][0] length: ", len(data[0][0]))
 
 frequencies = filter_frequencies(data)
-filtered_data = np.fft.ifftn(frequencies)
+# filtered_data = np.fft.ifftn(frequencies)
+filtered_data = recreate_samples(frequencies)
 
 
 
@@ -54,9 +68,6 @@ samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
 plot_2d = fig.add_subplot(3, 1, 2)
 plot_2d_2 = fig.add_subplot(2, 2, 2)
 
-print("Data length: ", len(data))
-print("Data[0] length: ", len(data[0]))
-print("Data[0][0] length: ", len(data[0][0]))
 
 x = np.arange(0, len(data[0][0]), 1)
 y = np.arange(0, len(data[0]),1)
