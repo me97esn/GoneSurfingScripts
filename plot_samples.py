@@ -2,10 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 import matplotlib.animation as animation
-
+import iift
 
 
 def filter_frequencies(data, include_number_of_columns = 30, include_number_of_rows = 30, include_number_of_frames = 30):
+    "Convert to frequency domain and filter out most of the middle frequencies. Then convert back to time domain."
 
     num_of_frames = len(data)
     num_of_rows = len(data[0])
