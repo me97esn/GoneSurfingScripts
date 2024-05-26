@@ -42,7 +42,8 @@ filtered_data = filter_frequencies(data)
 
 filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
-plot_2d = fig.add_subplot(2, 2, 2)
+plot_2d = fig.add_subplot(3, 1, 2)
+plot_2d_2 = fig.add_subplot(2, 2, 2)
 
 print("Data length: ", len(data))
 print("Data[0] length: ", len(data[0]))
@@ -68,14 +69,17 @@ while True:
         samples_3d_plot.clear()
         filtered_3d_plot.clear()
         plot_2d.clear()
+        plot_2d_2.clear()
 
         for axis in [samples_3d_plot, filtered_3d_plot]:
-            axis.set_zlim3d(0, 60)
+            axis.set_zlim3d(0, 150)
             axis.set_ylim3d(0, 150)
             axis.set_xlim3d(0, 150)
 
         plot_2d.set_ylim(0, 150)
         plot_2d.set_xlim(0, 150)
+        plot_2d_2.set_ylim(15, 25)
+        plot_2d_2.set_xlim(0, 150)
 
         samples_3d_plot.set_xlabel('Frame: ' + str(i+start_frame))
 
@@ -90,6 +94,10 @@ while True:
 
         plot_2d.plot(data[i][0], color='blue')
         plot_2d.plot(filtered_data[i][0], color='red')
+
+        # Also plot the middle of the ocean
+        plot_2d_2.plot(data[i][30], color='blue')
+        plot_2d_2.plot(filtered_data[i][30], color='red')
 
         plt.pause(0.01)
 # fft
