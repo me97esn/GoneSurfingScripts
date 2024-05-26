@@ -10,7 +10,8 @@ data = json.load(f)
 def wave_height(frame, x, y):
     "TODO: should use my own ifft implementation here!"
     # return 0.0
-    return  data[frame][x][y]
+    # print("Frame: ", frame, "x: ", x, "y: ", y)
+    return  data[frame][y][x]
 
 def recreate_samples(frequencies):
     "Loop through all of the frequencies and recreate the samples"
