@@ -4,6 +4,18 @@ import json
 import matplotlib.animation as animation
 import iift
 
+f = open('wave_samples.json')
+data = json.load(f)
+
+def wave_height(frame, x, y):
+    "TODO: should use my own ifft implementation here!"
+    return  data[frame][x][y]
+
+def recreate_samples(frequencies):
+    "Loop through all of the frequencies and recreate the samples"
+    result = []
+    for z,y,x in frequencies:
+        result.append(wave_height(z, x, y))
 
 def filter_frequencies(data, include_number_of_columns = 30, include_number_of_rows = 30, include_number_of_frames = 30):
     "Convert to frequency domain and filter out most of the middle frequencies. Then convert back to time domain."
@@ -26,15 +38,15 @@ def filter_frequencies(data, include_number_of_columns = 30, include_number_of_r
             z_arr.append(y_arr)
         filtered_frequencies.append(z_arr)
         # print(filtered_frequencies)
-    return np.fft.ifftn(filtered_frequencies)
+    return filtered_frequencies
 
 # set up a figure twice as wide as it is tall
 fig = plt.figure(figsize=plt.figaspect(0.5))
 
-f = open('wave_samples.json')
 
-data = json.load(f)
-filtered_data = filter_frequencies(data)
+frequencies = filter_frequencies(data)
+filtered_data = np.fft.ifftn(frequencies)
+
 
 
 filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
@@ -89,6 +101,7 @@ while True:
 
         plot_2d.plot(data[i][0], color='blue')
         plot_2d.plot(filtered_data[i][0], color='red')
+        # TODO: should plot values from my own implementation of iift3 here!
 
         # Also plot the middle of the ocean
         plot_2d_2.plot(data[i][30], color='blue')

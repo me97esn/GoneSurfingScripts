@@ -20,3 +20,5 @@ def ifft(t, fourierCoefficients):
     for m in range(n):
         result = result + fourierCoefficients[m]*np.exp(2*np.pi*1j*m*t/n)/n
     return result.real
+
+# TODO: create iift3 function
