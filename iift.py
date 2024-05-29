@@ -21,12 +21,12 @@ def ifft(t, fourierCoefficients):
 def ifft3(a, b, c, fourierCoefficients, lenA, lenB, lenC):
     # print("a: ", a, "b: ", b, "c: ", c)
     result = 0.0j
-    return fourierCoefficients[a][b][c]
-
-    for m in range(lenX):
-        for n in range(lenY):
-            fourierCoefficient = fourierCoefficients[m][n]
-            result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+    # return fourierCoefficients[a][b][c]
+    for l in range(lenA):
+        for m in range(lenB):
+            for n in range(lenC):
+                fourierCoefficient = fourierCoefficients[l][m][n]
+                result = result + fourierCoefficient*np.exp(2*np.pi*1j*(l*a/lenA + m*b/lenB + n*c/lenC))/(lenA*lenB*lenC)
     return result.real
 
 

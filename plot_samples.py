@@ -60,7 +60,14 @@ print("Frequencies length: ", len(frequencies))
 print("Frequencies[0] length: ", len(frequencies[0]))
 print("Frequencies[0][0] length: ", len(frequencies[0][0]))
 
+recreated_data = recreate_samples(np.fft.fftn(data))
+print("Recreated data 0,0,0: ", recreated_data[0][0][0])
+print("Data 0,0,0: ", data[0][0][0])
+
+
 filtered_data = recreate_samples(frequencies)
+
+
 
 filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
