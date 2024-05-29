@@ -7,11 +7,9 @@ import iift
 f = open('wave_samples.json')
 data = json.load(f)
 
-def wave_height(frame, x, y):
-    "TODO: should use my own ifft implementation here!"
-    # return 0.0
-    # print("Frame: ", frame, "x: ", x, "y: ", y)
-    return  data[frame][y][x]
+def wave_height(frame, x, y, frequencies):
+    return iift.ifft3(frame, y, x, frequencies, 0,0,0)
+    # return  data[frame][y][x]
 
 def recreate_samples(frequencies):
     "Loop through all of the frequencies and recreate the samples"
@@ -23,8 +21,8 @@ def recreate_samples(frequencies):
             row = []
             frame.append(row)
             for xi, x in enumerate(y):
-                row.append(wave_height(zi, xi, yi))
-    return result   
+                row.append(wave_height(zi, xi, yi, frequencies))
+    return result
 
 
 def filter_frequencies(data, include_number_of_columns = 30, include_number_of_rows = 30, include_number_of_frames = 30):
@@ -47,7 +45,6 @@ def filter_frequencies(data, include_number_of_columns = 30, include_number_of_r
                     y_arr.append(0)
             z_arr.append(y_arr)
         filtered_frequencies.append(z_arr)
-        # print(filtered_frequencies)
         # TODO: most of the frequencies are zero. How should I skip them, so that they won't waste memory?
     return filtered_frequencies
 
@@ -59,24 +56,23 @@ print("Data[0] length: ", len(data[0]))
 print("Data[0][0] length: ", len(data[0][0]))
 
 frequencies = filter_frequencies(data)
-# filtered_data = np.fft.ifftn(frequencies)
+print("Frequencies length: ", len(frequencies))
+print("Frequencies[0] length: ", len(frequencies[0]))
+print("Frequencies[0][0] length: ", len(frequencies[0][0]))
+
 filtered_data = recreate_samples(frequencies)
-
-
 
 filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
 plot_2d = fig.add_subplot(3, 1, 2)
 plot_2d_2 = fig.add_subplot(2, 2, 2)
 
-
+# Setup the dimensions of the plot
 x = np.arange(0, len(data[0][0]), 1)
 y = np.arange(0, len(data[0]),1)
-
 X, Y = np.meshgrid(x, y)
 
 plt.show(block=False)
-# Set axes label
 samples_3d_plot.set_xlabel('x', labelpad=20)
 samples_3d_plot.set_ylabel('y', labelpad=20)
 samples_3d_plot.set_zlabel('z', labelpad=200)
@@ -113,9 +109,8 @@ while True:
 
         plot_2d.plot(data[i][0], color='blue')
         plot_2d.plot(filtered_data[i][0], color='red')
-        # TODO: should plot values from my own implementation of iift3 here!
 
-        # Also plot the middle of the ocean
+        # Also plot the middle of the ocean, for instance column 30
         plot_2d_2.plot(data[i][30], color='blue')
         plot_2d_2.plot(filtered_data[i][30], color='red')
 
