@@ -8,7 +8,7 @@ f = open('wave_samples.json')
 data = json.load(f)
 
 def wave_height(frame, x, y, frequencies):
-    return iift.ifft3(frame, y, x, frequencies, 0,0,0)
+    return iift.ifft3(frame, y, x, frequencies, 574,53,116)
     # return  data[frame][y][x]
 
 def recreate_samples(frequencies):
@@ -60,9 +60,13 @@ print("Frequencies length: ", len(frequencies))
 print("Frequencies[0] length: ", len(frequencies[0]))
 print("Frequencies[0][0] length: ", len(frequencies[0][0]))
 
+print("Data 0,0,0: ", data[0][0][0])
+print("Data 0,30,30: ", data[0][30][30])
+print("ifft3 0,0,0: ", wave_height(0, 0, 0, frequencies))
+print("ifft3 0,30,30: ", wave_height(0, 30, 30, frequencies))
+
 recreated_data = recreate_samples(np.fft.fftn(data))
 print("Recreated data 0,0,0: ", recreated_data[0][0][0])
-print("Data 0,0,0: ", data[0][0][0])
 
 
 filtered_data = recreate_samples(frequencies)
