@@ -61,11 +61,12 @@ frequencies = filter_frequencies(data)
 print("Frequencies length: ", len(frequencies))
 print("Frequencies[0] length: ", len(frequencies[0]))
 print("Frequencies[0][0] length: ", len(frequencies[0][0]))
-
+print(datetime.datetime.now())
 print("Data 0,0,0: ", data[0][0][0])
 print("ifft3 0,0,0: ", wave_height(0, 0, 0, frequencies))
 print("Data 0,10,10: ", data[0][10][10])
 print("ifft3 0,10,10: ", wave_height(0, 10, 10, frequencies))
+print(datetime.datetime.now())
 # recreated_data = recreate_samples(np.fft.fftn(data))
 
 
@@ -124,6 +125,8 @@ while True:
 
         # Also plot the middle of the ocean, for instance column 30
         plot_2d_2.plot(data[i][10], color='blue')
-        plot_2d_2.plot(filtered_data[i][10], color='red')
+        recreated_samples = [wave_height(0, 0, i, frequencies) for i in range(len(frequencies[0][0]))]
+        # plot_2d_2.plot(filtered_data[i][10], color='red')
+        plot_2d_2.plot(recreated_samples, color='red')
 
         plt.pause(0.01)
