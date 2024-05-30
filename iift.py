@@ -21,6 +21,7 @@ def ifft(t, fourierCoefficients):
 def ifft3(a, b, c, fourierCoefficients, lenA, lenB, lenC):
     # print("a: ", a, "b: ", b, "c: ", c)
     result = 0.0j
+    print(".", end="")
     # return fourierCoefficients[a][b][c]
     for l in range(lenA):
         for m in range(lenB):

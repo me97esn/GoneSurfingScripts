@@ -3,12 +3,14 @@ import matplotlib.pyplot as plt
 import json
 import matplotlib.animation as animation
 import iift
+import datetime
 
 f = open('wave_samples.json')
 data = json.load(f)
 
 def wave_height(frame, x, y, frequencies):
-    return iift.ifft3(frame, y, x, frequencies, 574,53,116)
+
+    return iift.ifft3(frame, y, x, frequencies, len(frequencies),len(frequencies[0]),len(frequencies[0][0]))
     # return  data[frame][y][x]
 
 def recreate_samples(frequencies):
@@ -61,15 +63,14 @@ print("Frequencies[0] length: ", len(frequencies[0]))
 print("Frequencies[0][0] length: ", len(frequencies[0][0]))
 
 print("Data 0,0,0: ", data[0][0][0])
-print("Data 0,30,30: ", data[0][30][30])
 print("ifft3 0,0,0: ", wave_height(0, 0, 0, frequencies))
-print("ifft3 0,30,30: ", wave_height(0, 30, 30, frequencies))
+print("Data 0,10,10: ", data[0][10][10])
+print("ifft3 0,10,10: ", wave_height(0, 10, 10, frequencies))
+# recreated_data = recreate_samples(np.fft.fftn(data))
 
-recreated_data = recreate_samples(np.fft.fftn(data))
-print("Recreated data 0,0,0: ", recreated_data[0][0][0])
 
-
-filtered_data = recreate_samples(frequencies)
+filtered_data = np.fft.ifftn(frequencies)
+# filtered_data = recreate_samples(frequencies)
 
 
 
@@ -99,13 +100,13 @@ while True:
 
         for axis in [samples_3d_plot, filtered_3d_plot]:
             axis.set_zlim3d(0, 150)
-            axis.set_ylim3d(0, 150)
-            axis.set_xlim3d(0, 150)
+            axis.set_ylim3d(0, len(data[0]))
+            axis.set_xlim3d(0, len(data[0][0]))
 
         plot_2d.set_ylim(0, 150)
         plot_2d.set_xlim(0, 150)
         plot_2d_2.set_ylim(15, 25)
-        plot_2d_2.set_xlim(0, 150)
+        plot_2d_2.set_xlim(0, len(data[0]))
 
         samples_3d_plot.set_xlabel('Frame: ' + str(i+start_frame))
 
@@ -122,7 +123,7 @@ while True:
         plot_2d.plot(filtered_data[i][0], color='red')
 
         # Also plot the middle of the ocean, for instance column 30
-        plot_2d_2.plot(data[i][30], color='blue')
-        plot_2d_2.plot(filtered_data[i][30], color='red')
+        plot_2d_2.plot(data[i][10], color='blue')
+        plot_2d_2.plot(filtered_data[i][10], color='red')
 
         plt.pause(0.01)
