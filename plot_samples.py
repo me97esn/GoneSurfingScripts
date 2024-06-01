@@ -13,17 +13,17 @@ def wave_height(frame, x, y, frequencies):
     return iift.ifft3(frame, y, x, frequencies, len(frequencies),len(frequencies[0]),len(frequencies[0][0]))
     # return  data[frame][y][x]
 
-def recreate_samples(frequencies):
+def wave_height2(x, y, frequencies):
+    return iift.ifft2(x, y, frequencies, len(frequencies),len(frequencies[0]))
+
+def recreate_samples(frequencies2d):
     "Loop through all of the frequencies and recreate the samples"
     result = []
-    for zi, z in enumerate(frequencies):
-        frame = []
-        result.append(frame)
-        for yi, y in enumerate(z):
-            row = []
-            frame.append(row)
-            for xi, x in enumerate(y):
-                row.append(wave_height(zi, xi, yi, frequencies))
+    for xi, x in enumerate(frequencies2d):
+        row = []
+        result.append(row)
+        for yi, y in enumerate(x):
+                row.append(wave_height2(xi, yi, frequencies))
     return result
 
 
@@ -128,6 +128,6 @@ while True:
         #
         plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
         plot_2d_2.plot(data[frame][0], color='blue')
-        # recreated_samples = [wave_height(0, 0, frame, frequencies) for frame in range(len(frequencies[0][0]))]
-
+        recreated_data = recreate_samples(frequencies[frame])
+        plot_2d_2.plot(recreated_data[0], color='red')
         plt.pause(0.01)
