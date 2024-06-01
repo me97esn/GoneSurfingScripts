@@ -61,7 +61,7 @@ frequencies = filter_frequencies(data)
 
 filtered_data = np.fft.ifftn(frequencies)
 
-filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
+#filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
 plot_2d = fig.add_subplot(3, 1, 2)
 plot_2d_2 = fig.add_subplot(2, 2, 2)
@@ -80,11 +80,11 @@ while True:
     for frame in range(1, len(data)):
         # First, clear the plots and then set the limits to clear them but restart them in the same dimensions each time
         samples_3d_plot.clear()
-        filtered_3d_plot.clear()
+        #filtered_3d_plot.clear()
         plot_2d.clear()
         plot_2d_2.clear()
 
-        for axis in [samples_3d_plot, filtered_3d_plot]:
+        for axis in [samples_3d_plot]:
             axis.set_zlim3d(0, 150)
             axis.set_ylim3d(0, len(data[0]))
             axis.set_xlim3d(0, len(data[0][0]))
@@ -94,11 +94,16 @@ while True:
 
         plot_2d_2.set_xlim(0, len(data[0][0]))
         plot_2d_2.set_ylim(15, 25)
+
+        frame_frequencies = np.fft.fftn(data[frame])
+        # TODO: filter these frequencies
+
+
         # Then plot them
 
 
         samples_3d_plot.set_xlabel('Original samples, frame: ' + str(frame+start_frame))
-        filtered_3d_plot.set_xlabel('filtered samples, using numpy.fft.fftn')
+        #filtered_3d_plot.set_xlabel('filtered samples, using numpy.fft.fftn')
 
         # get the 2d array of all of the samples for this frame
         Z = np.array(data[frame])
@@ -106,17 +111,19 @@ while True:
 
         # plot 2, fft
         Z2 = np.array(filtered_data[frame])
-        filtered_3d_plot.plot_surface(X, Y, Z2, cmap = plt.cm.cividis)
+        #filtered_3d_plot.plot_surface(X, Y, Z2, cmap = plt.cm.cividis)
         #
         plot_2d.set_title('Original samples, and numpy ifft for the filtered frequencies, for one column')
-        plot_2d.plot(data[frame][0], color='blue')
-        plot_2d.plot(filtered_data[frame][0], color='red')
-        #
-        plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
-        samples_column = data[frame][0]
-        plot_2d_2.plot(samples_column, color='blue')
-        recreated_column_data = [ iift.ifft2(0, y, frequencies[frame], len(data[frame]),len(data[frame][0])) for y in range(len( samples_column  ))]
-        print(recreated_column_data)
-        # TODO: only the first sample is correct. The rest are wrong. Why?
-        plot_2d_2.plot(recreated_column_data, color='red')
+        # plot_2d.plot(data[frame][0], color='blue')
+        # plot_2d.plot(filtered_data[frame][0], color='red')
+        plot_2d.plot(np.fft.ifftn(frame_frequencies[frame])[0], color='red')
+        
+
+        # plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
+        # samples_column = data[frame][0]
+        # plot_2d_2.plot(samples_column, color='blue')
+        # recreated_column_data = [ iift.ifft2(0, y, frequencies[frame], len(data[frame]),len(data[frame][0])) for y in range(len( samples_column  ))]
+        # # print(recreated_column_data)
+        # # TODO: only the first sample is correct. The rest are wrong. Why?
+        # plot_2d_2.plot(recreated_column_data, color='red')
         plt.pause(0.01)
