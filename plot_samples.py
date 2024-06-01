@@ -23,7 +23,7 @@ def recreate_samples(frequencies2d):
         row = []
         result.append(row)
         for yi, y in enumerate(x):
-                row.append(wave_height2(xi, yi, frequencies))
+                row.append(wave_height2(xi, yi, frequencies2d))
     return result
 
 

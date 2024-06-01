@@ -1,11 +1,13 @@
 import numpy as np
 # https://numpy.org/doc/stable/reference/routines.fft.html
 def ifft2(x, y, fourierCoefficients, lenX, lenY):
+    # print("x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
     result = 0.0j
 
     for m in range(lenX):
         for n in range(lenY):
             fourierCoefficient = fourierCoefficients[m][n]
+            # print("m: ", m, "n: ", n, "fourierCoefficient: ", fourierCoefficient, "x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
             result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
     return result.real
 
