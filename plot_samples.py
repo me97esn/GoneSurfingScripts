@@ -110,13 +110,13 @@ while True:
         samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
 
         # plot 2, fft
-        Z2 = np.array(filtered_data[frame])
-        #filtered_3d_plot.plot_surface(X, Y, Z2, cmap = plt.cm.cividis)
-        #
+        # Z2 = np.array(filtered_data[frame])
+        # filtered_3d_plot.plot_surface(X, Y, Z2, cmap = plt.cm.cividis)
+        # #
         plot_2d.set_title('Original samples, and numpy ifft for the filtered frequencies, for one column')
-        # plot_2d.plot(data[frame][0], color='blue')
+        plot_2d.plot(data[frame][0], color='blue')
         # plot_2d.plot(filtered_data[frame][0], color='red')
-        plot_2d.plot(np.fft.ifftn(frame_frequencies[frame])[0], color='red')
+        plot_2d.plot(np.fft.ifftn(frame_frequencies)[0], color='red')
         
 
         # plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
