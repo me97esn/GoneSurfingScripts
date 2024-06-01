@@ -115,7 +115,7 @@ while True:
         plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
         samples_column = data[frame][0]
         plot_2d_2.plot(samples_column, color='blue')
-        # TODO: implement next line
         recreated_column_data = [ iift.ifft2(0, y, filtered_data[frame], len(data[frame]),len(data[frame][0])) for y in range(len( samples_column  ))]
+        print(recreated_column_data)
         plot_2d_2.plot(recreated_column_data, color='red')
         plt.pause(0.01)
