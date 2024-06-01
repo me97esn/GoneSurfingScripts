@@ -61,12 +61,12 @@ frequencies = filter_frequencies(data)
 print("Frequencies length: ", len(frequencies))
 print("Frequencies[0] length: ", len(frequencies[0]))
 print("Frequencies[0][0] length: ", len(frequencies[0][0]))
-print(datetime.datetime.now())
-print("Data 0,0,0: ", data[0][0][0])
-print("ifft3 0,0,0: ", wave_height(0, 0, 0, frequencies))
-print("Data 0,10,10: ", data[0][10][10])
-print("ifft3 0,10,10: ", wave_height(0, 10, 10, frequencies))
-print(datetime.datetime.now())
+# print(datetime.datetime.now())
+# print("Data 0,0,0: ", data[0][0][0])
+# print("ifft3 0,0,0: ", wave_height(0, 0, 0, frequencies))
+# print("Data 0,10,10: ", data[0][10][10])
+# print("ifft3 0,10,10: ", wave_height(0, 10, 10, frequencies))
+# print(datetime.datetime.now())
 # recreated_data = recreate_samples(np.fft.fftn(data))
 
 
@@ -91,9 +91,8 @@ samples_3d_plot.set_ylabel('y', labelpad=20)
 samples_3d_plot.set_zlabel('z', labelpad=200)
 start_frame = 752
 while True:
-    for i in range(1, len(data)):
-        # plot 1, samples
-
+    for frame in range(1, len(data)):
+        # First, clear the plots and then set the limits to clear them but restart them in the same dimensions each time
         samples_3d_plot.clear()
         filtered_3d_plot.clear()
         plot_2d.clear()
@@ -104,29 +103,33 @@ while True:
             axis.set_ylim3d(0, len(data[0]))
             axis.set_xlim3d(0, len(data[0][0]))
 
-        plot_2d.set_ylim(0, 150)
         plot_2d.set_xlim(0, 150)
-        plot_2d_2.set_ylim(15, 25)
-        plot_2d_2.set_xlim(0, len(data[0]))
+        plot_2d.set_ylim(15, 25)
 
-        samples_3d_plot.set_xlabel('Frame: ' + str(i+start_frame))
+        plot_2d_2.set_xlim(0, len(data[0]))
+        plot_2d_2.set_ylim(15, 25)
+        
+        # Then plot them
+
+        samples_3d_plot.set_xlabel('Original samples, frame: ' + str(frame+start_frame))
+        filtered_3d_plot.set_xlabel('filtered samples, using numpy.fft.fftn')
 
         # get the 2d array of all of the samples for this frame
-        Z = np.array(data[i])
+        Z = np.array(data[frame])
         samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
 
         # plot 2, fft
-        # filtered_3d_plot.clf()
-        Z2 = np.array(filtered_data[i])
+        Z2 = np.array(filtered_data[frame])
         filtered_3d_plot.plot_surface(X, Y, Z2, cmap = plt.cm.cividis)
-
-        plot_2d.plot(data[i][0], color='blue')
-        plot_2d.plot(filtered_data[i][0], color='red')
-
-        # Also plot the middle of the ocean, for instance column 30
-        plot_2d_2.plot(data[i][10], color='blue')
-        recreated_samples = [wave_height(0, 0, i, frequencies) for i in range(len(frequencies[0][0]))]
-        # plot_2d_2.plot(filtered_data[i][10], color='red')
-        plot_2d_2.plot(recreated_samples, color='red')
+        #
+        plot_2d.set_title('Original samples, and numpy ifft for the filtered frequencies, for one column')
+        plot_2d.plot(data[frame][0], color='blue')
+        plot_2d.plot(filtered_data[frame][0], color='red')
+        #
+        # # Also plot the middle of the ocean, for instance column 30
+        # plot_2d_2.plot(data[frame][10], color='blue')
+        # recreated_samples = [wave_height(0, 0, frame, frequencies) for frame in range(len(frequencies[0][0]))]
+        # # plot_2d_2.plot(filtered_data[i][10], color='red')
+        # plot_2d_2.plot(recreated_samples, color='red')
 
         plt.pause(0.01)
