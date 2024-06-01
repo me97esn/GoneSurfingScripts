@@ -126,10 +126,8 @@ while True:
         plot_2d.plot(data[frame][0], color='blue')
         plot_2d.plot(filtered_data[frame][0], color='red')
         #
-        # # Also plot the middle of the ocean, for instance column 30
-        # plot_2d_2.plot(data[frame][10], color='blue')
+        plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
+        plot_2d_2.plot(data[frame][0], color='blue')
         # recreated_samples = [wave_height(0, 0, frame, frequencies) for frame in range(len(frequencies[0][0]))]
-        # # plot_2d_2.plot(filtered_data[i][10], color='red')
-        # plot_2d_2.plot(recreated_samples, color='red')
 
         plt.pause(0.01)
