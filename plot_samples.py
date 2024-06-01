@@ -58,22 +58,8 @@ print("Data[0] length: ", len(data[0]))
 print("Data[0][0] length: ", len(data[0][0]))
 
 frequencies = filter_frequencies(data)
-print("Frequencies length: ", len(frequencies))
-print("Frequencies[0] length: ", len(frequencies[0]))
-print("Frequencies[0][0] length: ", len(frequencies[0][0]))
-# print(datetime.datetime.now())
-# print("Data 0,0,0: ", data[0][0][0])
-# print("ifft3 0,0,0: ", wave_height(0, 0, 0, frequencies))
-# print("Data 0,10,10: ", data[0][10][10])
-# print("ifft3 0,10,10: ", wave_height(0, 10, 10, frequencies))
-# print(datetime.datetime.now())
-# recreated_data = recreate_samples(np.fft.fftn(data))
-
 
 filtered_data = np.fft.ifftn(frequencies)
-# filtered_data = recreate_samples(frequencies)
-
-
 
 filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
@@ -103,13 +89,13 @@ while True:
             axis.set_ylim3d(0, len(data[0]))
             axis.set_xlim3d(0, len(data[0][0]))
 
-        plot_2d.set_xlim(0, 150)
+        plot_2d.set_xlim(0, len(data[0][0]))
         plot_2d.set_ylim(15, 25)
 
-        plot_2d_2.set_xlim(0, len(data[0]))
+        plot_2d_2.set_xlim(0, len(data[0][0]))
         plot_2d_2.set_ylim(15, 25)
-        
         # Then plot them
+
 
         samples_3d_plot.set_xlabel('Original samples, frame: ' + str(frame+start_frame))
         filtered_3d_plot.set_xlabel('filtered samples, using numpy.fft.fftn')
@@ -127,7 +113,7 @@ while True:
         plot_2d.plot(filtered_data[frame][0], color='red')
         #
         plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
-        plot_2d_2.plot(data[frame][0], color='blue')
-        recreated_data = recreate_samples(frequencies[frame])
-        plot_2d_2.plot(recreated_data[0], color='red')
+        samples_column = data[frame][0]
+        plot_2d_2.plot(samples_column, color='blue')
+        # recreated_column_data = [ iift.iift2(x, 0, samples_column, len(samples_column),len(frequencies[0])) for y in range(len(frequencies[0]))]
         plt.pause(0.01)
