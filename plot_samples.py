@@ -96,6 +96,7 @@ while True:
         plot_2d_2.set_ylim(15, 25)
 
         frame_frequencies = np.fft.fftn(data[frame])
+        frame_frequencies_1d = np.fft.fftn(data[frame][0])
         # TODO: filter these frequencies
 
 
@@ -116,14 +117,13 @@ while True:
         plot_2d.set_title('Original samples, and numpy ifft for the filtered frequencies, for one column')
         plot_2d.plot(data[frame][0], color='blue')
         # plot_2d.plot(filtered_data[frame][0], color='red')
-        plot_2d.plot(np.fft.ifftn(frame_frequencies)[0], color='red')
+        plot_2d.plot(np.fft.ifftn(frame_frequencies_1d), color='red')
+        # plot_2d.plot(np.fft.ifftn(frame_frequencies)[0], color='red')
         
 
-        # plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
-        # samples_column = data[frame][0]
-        # plot_2d_2.plot(samples_column, color='blue')
-        # recreated_column_data = [ iift.ifft2(0, y, frequencies[frame], len(data[frame]),len(data[frame][0])) for y in range(len( samples_column  ))]
-        # # print(recreated_column_data)
+        plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
+        recreated_column_data = [ iift.ifft2(0, y, frame_frequencies, len(data[frame]),len(data[frame][0])) for y in range(len( data[frame] ))]
+        # print(recreated_column_data)
         # # TODO: only the first sample is correct. The rest are wrong. Why?
-        # plot_2d_2.plot(recreated_column_data, color='red')
+        plot_2d_2.plot(recreated_column_data, color='red')
         plt.pause(0.01)
