@@ -1,14 +1,21 @@
 import numpy as np
 # https://numpy.org/doc/stable/reference/routines.fft.html
-def ifft2(x, y, fourierCoefficients, lenX, lenY):
+def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=25):
     # print("x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
     result = 0.0j
 
-    for m in range(lenX):
-        for n in range(lenY):
+    for i, m in enumerate( range(lenX)):
+        for ii, n in enumerate( range(lenY)):
             fourierCoefficient = fourierCoefficients[m][n]
             # print("m: ", m, "n: ", n, "fourierCoefficient: ", fourierCoefficient, "x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
-            result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+            # Low frequencies are at the beginning of the list
+            if ii < numberOfFrequenciesToInclude:
+                result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+
+            # High frequencies are at the end of the list
+            if ii >= lenY - numberOfFrequenciesToInclude:
+                result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+
     return result.real
 
 
@@ -20,6 +27,7 @@ def ifft(t, fourierCoefficients):
         result = result + fourierCoefficients[m]*np.exp(2*np.pi*1j*m*t/n)/n
     return result.real
 
+# NOTE: This function does not work as expected
 def ifft3(a, b, c, fourierCoefficients, lenA, lenB, lenC):
     # print("a: ", a, "b: ", b, "c: ", c)
     result = 0.0j

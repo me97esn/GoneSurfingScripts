@@ -16,17 +16,6 @@ def wave_height(frame, x, y, frequencies):
 def wave_height2(x, y, frequencies):
     return iift.ifft2(x, y, frequencies, len(frequencies),len(frequencies[0]))
 
-def recreate_samples(frequencies2d):
-    "Loop through all of the frequencies and recreate the samples"
-    result = []
-    for xi, x in enumerate(frequencies2d):
-        row = []
-        result.append(row)
-        for yi, y in enumerate(x):
-                row.append(wave_height2(xi, yi, frequencies2d))
-    return result
-
-
 def filter_frequencies(data, include_number_of_columns = 30, include_number_of_rows = 30, include_number_of_frames = 30):
     "Convert to frequency domain and filter out most of the middle frequencies. Then convert back to time domain."
 
