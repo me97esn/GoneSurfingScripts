@@ -1,6 +1,8 @@
 import numpy as np
+import datetime
 # https://numpy.org/doc/stable/reference/routines.fft.html
-def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=25):
+def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30):
+    time_start = datetime.datetime.now()
     # print("x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
     result = 0.0j
 
@@ -9,13 +11,16 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=25
             fourierCoefficient = fourierCoefficients[m][n]
             # print("m: ", m, "n: ", n, "fourierCoefficient: ", fourierCoefficient, "x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
             # Low frequencies are at the beginning of the list
-            if ii < numberOfFrequenciesToInclude:
+            if  ii < numberOfFrequenciesToInclude:
                 result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
 
             # High frequencies are at the end of the list
             if ii >= lenY - numberOfFrequenciesToInclude:
                 result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+    time_end = datetime.datetime.now()
+    c = time_end - time_start
 
+    print("Time taken: ", c.total_seconds(), " seconds")
     return result.real
 
 
