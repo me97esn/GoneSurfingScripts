@@ -7,6 +7,7 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     result = 0.0j
 
     for i, m in enumerate( range(lenX)):
+        # temporarilly create a filterered subset of the fourier coefficients
         for ii, n in enumerate( range(lenY)):
             fourierCoefficient = fourierCoefficients[m][n]
             # print("m: ", m, "n: ", n, "fourierCoefficient: ", fourierCoefficient, "x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
@@ -20,7 +21,7 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     time_end = datetime.datetime.now()
     c = time_end - time_start
 
-    print("Time taken: ", c.total_seconds(), " seconds")
+    # print("Time taken: ", c.total_seconds(), " seconds")
     return result.real
 
 

@@ -86,11 +86,6 @@ while True:
 
         frame_frequencies = np.fft.fftn(data[frame])
         frame_frequencies_1d = np.fft.fftn(data[frame][0])
-        # TODO: filter these frequencies
-
-
-        # Then plot them
-
 
         samples_3d_plot.set_xlabel('Original samples, frame: ' + str(frame+start_frame))
         #filtered_3d_plot.set_xlabel('filtered samples, using numpy.fft.fftn')
@@ -104,7 +99,13 @@ while True:
         plot_2d.plot(np.fft.ifftn(frame_frequencies_1d), color='red')
 
         plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
-        recreated_column_data = [ iift.ifft2(0, y, frame_frequencies, len(data[frame]),len(data[frame][0])) for y in range(len( data[frame][0] ))]
+
+        lenX = len(data[frame])
+        lenY = len(data[frame][0])
+        filtered_frame_frequencies = [ frame_frequencies[x] for x in range(lenX)]
+        number_of_freqs = 30
+        recreated_column_data = [ iift.ifft2(0, y, filtered_frame_frequencies, lenX,lenY, number_of_freqs) for y in range(lenY)]
+
         plot_2d_2.plot(data[frame][0], color='blue')
         plot_2d_2.plot(recreated_column_data, color='red')
         plt.pause(0.01)
