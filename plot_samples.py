@@ -16,29 +16,6 @@ def wave_height(frame, x, y, frequencies):
 def wave_height2(x, y, frequencies):
     return iift.ifft2(x, y, frequencies, len(frequencies),len(frequencies[0]))
 
-def filter_frequencies(data, include_number_of_columns = 30, include_number_of_rows = 30, include_number_of_frames = 30):
-    "Convert to frequency domain and filter out most of the middle frequencies. Then convert back to time domain."
-
-    num_of_frames = len(data)
-    num_of_rows = len(data[0])
-    num_of_columns = len(data[0][0])
-
-    frequencies = np.fft.fftn(data)
-    filtered_frequencies = []
-    for i, z in enumerate(frequencies):
-        z_arr = []
-        for ii,y in enumerate(z):
-            y_arr = []
-            for iii,x in enumerate(y):
-                if  (iii < include_number_of_columns or iii > num_of_columns - include_number_of_columns) and (ii < include_number_of_rows or ii > num_of_rows - include_number_of_rows)and (i < include_number_of_frames or i > num_of_frames - include_number_of_frames):
-                    y_arr.append(x)
-                else:
-                    y_arr.append(0)
-            z_arr.append(y_arr)
-        filtered_frequencies.append(z_arr)
-        # TODO: most of the frequencies are zero. How should I skip them, so that they won't waste memory?
-    return filtered_frequencies
-
 # set up a figure twice as wide as it is tall
 fig = plt.figure(figsize=plt.figaspect(0.5))
 
@@ -46,9 +23,6 @@ print("Data length: ", len(data))
 print("Data[0] length: ", len(data[0]))
 print("Data[0][0] length: ", len(data[0][0]))
 
-frequencies = filter_frequencies(data)
-
-filtered_data = np.fft.ifftn(frequencies)
 
 #filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
@@ -102,9 +76,9 @@ while True:
 
         lenX = len(data[frame])
         lenY = len(data[frame][0])
-        filtered_frame_frequencies = [ frame_frequencies[x] for x in range(lenX)]
-        number_of_freqs = 30
-        recreated_column_data = [ iift.ifft2(0, y, filtered_frame_frequencies, lenX,lenY, number_of_freqs) for y in range(lenY)]
+        number_of_freqs = 10
+        # TODO: This should probably be done in the sampling instead of here.
+        recreated_column_data = [ iift.ifft2(0, y, frame_frequencies, lenX,lenY, number_of_freqs) for y in range(lenY)]
 
         plot_2d_2.plot(data[frame][0], color='blue')
         plot_2d_2.plot(recreated_column_data, color='red')
