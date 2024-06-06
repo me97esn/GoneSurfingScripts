@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 import matplotlib.animation as animation
-import iift
+import ifft
 import datetime
 
 f = open('wave_samples.json')
@@ -85,7 +85,7 @@ while True:
         # print('Frame Frequencies, col 0: ',frame_frequencies[0])
         # print('Filtered frequencies, col 0: ',filtered_frame_frequencies[0])
 
-        recreated_column_data = [ iift.ifft2(0, y, filtered_frame_frequencies, lenX,lenY, number_of_freqs) for y in range(lenY)]
+        recreated_column_data = [ ifft.ifft2(0, y, filtered_frame_frequencies, lenX,lenY, number_of_freqs) for y in range(lenY)]
 
         plot_2d_2.plot(data[frame][0], color='blue')
         plot_2d_2.plot(recreated_column_data, color='red')
