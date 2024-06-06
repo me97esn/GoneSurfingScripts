@@ -6,17 +6,18 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     # print("x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
     result = 0.0j
 
-    for i, m in enumerate( range(lenX)):
+    for m in range(lenX):
         # temporarilly create a filterered subset of the fourier coefficients
-        for ii, n in enumerate( range(lenY)):
+        for n in range(lenY):
             fourierCoefficient = fourierCoefficients[m][n]
-            # print("m: ", m, "n: ", n, "fourierCoefficient: ", fourierCoefficient, "x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY)
             # Low frequencies are at the beginning of the list
-            if  ii < numberOfFrequenciesToInclude:
+            if  n < numberOfFrequenciesToInclude:
                 result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+            
+            # Middle frequencies are not included in the list
 
             # High frequencies are at the end of the list
-            if ii >= lenY - numberOfFrequenciesToInclude:
+            if n >= lenY - numberOfFrequenciesToInclude:
                 result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
     time_end = datetime.datetime.now()
     c = time_end - time_start
