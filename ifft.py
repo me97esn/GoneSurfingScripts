@@ -5,10 +5,11 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     """Note: lenX and lenY should be the total number of samples BEFORE subtracting the ignored frequencies"""
     # time_start = datetime.datetime.now()
     result = 0.0j
-    # print("x: ", x, "y: ", y, "lenX: ", lenX, "lenY: ", lenY, "numberOfFrequenciesToInclude: ", numberOfFrequenciesToInclude)
     # print("frame frequencies length: ", len(fourierCoefficients))
     # print("frame frequencies[0] length: ", len(fourierCoefficients[0]))
     #
+    number_to_skip = lenY - numberOfFrequenciesToInclude * 2
+    print("number_to_skip: ", number_to_skip)
     for m in range(lenX):
         # TODO: This should not be lenY, because we are skipping some frequencies
         for n in range(len(fourierCoefficients[0])):
@@ -17,18 +18,19 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
             # Low frequencies are at the beginning of the list
             if  n < numberOfFrequenciesToInclude:
                 result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+                # print("--- fourierCoefficient: ", fourierCoefficient)
             else:
                 # Middle frequencies are not included in the list
-                number_to_skip = lenY - numberOfFrequenciesToInclude
                 _n = n + number_to_skip
+                # print("=== fourierCoefficient after skipping: ", fourierCoefficient)
 
                 # High frequencies are at the end of the list
-                # TODO: _n should not be bigger then n for indexing, only for the calculation!
                 result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + _n*y/lenY))/(lenX*lenY)
     # time_end = datetime.datetime.now()
     # c = time_end - time_start
 
     # print("Time taken: ", c.total_seconds(), " seconds")
+        # exit()
     return result.real
 
 
