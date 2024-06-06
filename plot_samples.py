@@ -78,6 +78,10 @@ while True:
         lenY = len(data[frame][0])
         number_of_freqs = 10
         # TODO: This should probably be done in the sampling instead of here.
+        filtered_frame_frequencies = np.array([[z for zi, z in enumerate(arr) if zi < number_of_freqs or zi >= len(arr)-number_of_freqs] for arr in frame_frequencies])
+        print("Filtered frame frequencies length: ", len(filtered_frame_frequencies))
+        print("Filtered frame frequencies[0] length: ", len(filtered_frame_frequencies[0]))
+
         recreated_column_data = [ iift.ifft2(0, y, frame_frequencies, lenX,lenY, number_of_freqs) for y in range(lenY)]
 
         plot_2d_2.plot(data[frame][0], color='blue')
