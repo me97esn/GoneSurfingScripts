@@ -83,13 +83,9 @@ while True:
         plot_2d.plot(np.fft.ifftn(frame_frequencies_1d), color='red')
 
         plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
-
-        lenX = len(data[frame])
-        lenY = len(data[frame][0])
-        # filtered_frame_frequencies = np.array([[z for zi, z in enumerate(arr) if zi < number_of_freqs or zi >= len(arr)-number_of_freqs] for arr in frame_frequencies])
-        # print("frame frequencies[0]: ", frame_frequencies[0])
+        lenX = frequencies_data['len_x']
+        lenY = frequencies_data['len_y']
         recreated_column_data = [ ifft.ifft2(0, y, freqs_complex[frame], lenX,lenY, frequencies_data['number_of_frequencies_to_include']) for y in range(lenY)]
-        # recreated_column_data = [ ifft.ifft2(0, y, filtered_frame_frequencies, lenX,lenY, number_of_freqs) for y in range(lenY)]
 
         plot_2d_2.plot(data[frame][0], color='blue')
         plot_2d_2.plot(recreated_column_data, color='red')
