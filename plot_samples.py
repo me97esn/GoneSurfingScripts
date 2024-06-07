@@ -8,6 +8,15 @@ import datetime
 f = open('wave_samples.json')
 data = json.load(f)
 
+# TODO: load the frequencies file, and convert all of the frequency arrays to complex numbers
+frequencies_file = open('wave_frequencies_subset.json')
+frequencies_data = json.load(frequencies_file)
+freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_frequencies]) for frame_frequencies in frequencies_data['frequencies_per_frame']]
+
+print("Frequencies: ", freqs_complex)
+exit()
+print("TODO: open the frequencies file and use that instead of the samples file")
+
 def wave_height(frame, x, y, frequencies):
 
     return iift.ifft3(frame, y, x, frequencies, len(frequencies),len(frequencies[0]),len(frequencies[0][0]))
