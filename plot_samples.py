@@ -8,17 +8,12 @@ import datetime
 f = open('wave_samples.json')
 data = json.load(f)
 
-# TODO: load the frequencies file, and convert all of the frequency arrays to complex numbers
+# load the frequencies file, and convert all of the frequency arrays to complex numbers
 frequencies_file = open('wave_frequencies_subset.json')
 frequencies_data = json.load(frequencies_file)
 freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_frequencies]) for frame_frequencies in frequencies_data['frequencies_per_frame']]
 
-print("Frequencies: ", freqs_complex)
-exit()
-print("TODO: open the frequencies file and use that instead of the samples file")
-
 def wave_height(frame, x, y, frequencies):
-
     return iift.ifft3(frame, y, x, frequencies, len(frequencies),len(frequencies[0]),len(frequencies[0][0]))
     # return  data[frame][y][x]
 
@@ -50,10 +45,10 @@ samples_3d_plot.set_zlabel('z', labelpad=200)
 start_frame = 752
 
 # Filter the frequencies of all of the frames
-number_of_freqs = 15
-frequencies_all_frames = [np.fft.fftn(frame) for frame in data]
-filtered_frequencies_all_frames = [np.array([[z for zi, z in enumerate(arr) if zi < number_of_freqs or zi >= len(arr)-number_of_freqs] for arr in frame_frequencies]) for frame_frequencies in frequencies_all_frames]
-
+# number_of_freqs = 15
+# frequencies_all_frames = [np.fft.fftn(frame) for frame in data]
+# filtered_frequencies_all_frames = [np.array([[z for zi, z in enumerate(arr) if zi < number_of_freqs or zi >= len(arr)-number_of_freqs] for arr in frame_frequencies]) for frame_frequencies in frequencies_all_frames]
+#
 while True:
     for frame in range(1, len(data)):
         # First, clear the plots and then set the limits to clear them but restart them in the same dimensions each time
@@ -93,7 +88,7 @@ while True:
         lenY = len(data[frame][0])
         # filtered_frame_frequencies = np.array([[z for zi, z in enumerate(arr) if zi < number_of_freqs or zi >= len(arr)-number_of_freqs] for arr in frame_frequencies])
         # print("frame frequencies[0]: ", frame_frequencies[0])
-        recreated_column_data = [ ifft.ifft2(0, y, filtered_frequencies_all_frames[frame], lenX,lenY, number_of_freqs) for y in range(lenY)]
+        recreated_column_data = [ ifft.ifft2(0, y, freqs_complex[frame], lenX,lenY, frequencies_data['number_of_frequencies_to_include']) for y in range(lenY)]
         # recreated_column_data = [ ifft.ifft2(0, y, filtered_frame_frequencies, lenX,lenY, number_of_freqs) for y in range(lenY)]
 
         plot_2d_2.plot(data[frame][0], color='blue')
