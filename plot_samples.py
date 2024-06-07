@@ -71,6 +71,11 @@ while True:
         frame_frequencies = np.fft.fftn(data[frame])
         frame_frequencies_1d = np.fft.fftn(data[frame][0])
 
+        # print("frame_frequencies:\n ", frame_frequencies[0])
+        # print()
+        # print("freqs_complex: \n", freqs_complex[frame][0])
+        # exit()
+
         samples_3d_plot.set_xlabel('Original samples, frame: ' + str(frame+start_frame))
         #filtered_3d_plot.set_xlabel('filtered samples, using numpy.fft.fftn')
 
