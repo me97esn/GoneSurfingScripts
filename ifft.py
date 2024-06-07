@@ -9,7 +9,6 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     # print("frame frequencies[0] length: ", len(fourierCoefficients[0]))
     #
     number_to_skip = lenY - numberOfFrequenciesToInclude * 2
-    print("number_to_skip: ", number_to_skip)
     for m in range(lenX):
         # TODO: This should not be lenY, because we are skipping some frequencies
         for n in range(len(fourierCoefficients[0])):
