@@ -5,13 +5,44 @@ import matplotlib.animation as animation
 import ifft
 import datetime
 
+
 f = open('wave_samples.json')
 data = json.load(f)
+
+
 
 # load the frequencies file, and convert all of the frequency arrays to complex numbers
 frequencies_file = open('wave_frequencies_subset.json')
 frequencies_data = json.load(frequencies_file)
 freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_frequencies]) for frame_frequencies in frequencies_data['frequencies_per_frame']]
+
+# Filter out the x dimension here as well. If this works fine: move it to the convert file
+number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
+print("freqs_complex[0][0]: ", freqs_complex[0][0])
+
+# Hardcode filter out the middle frequencies, to see if the ifft works
+number_of_x_frequencies_to_include = 7 
+for frame in range(len(freqs_complex)):
+    for y in range(len(freqs_complex[frame])):
+        for x in range(len(freqs_complex[frame][y])):
+            if y > number_of_x_frequencies_to_include and y < len(freqs_complex[frame])-number_of_x_frequencies_to_include:
+                freqs_complex[frame][y][x] = 0j
+# filtered_frequencies_all_frames = [np.array([[z if True else 0 for zi, z in enumerate(column) if xi < number_of_frequencies_to_include or xi >= len(column)-number_of_frequencies_to_include ] for xi, column in enumerate(frame_frequencies)]) for frame_frequencies in data]
+
+
+print("Data length: ", len(data))
+print("Data[0] length: ", len(data[0]))
+print("Data[0][0] length: ", len(data[0][0]))
+# print("+++++++++++++++++++  ")
+print("len(freqs_complex): ", len(freqs_complex))
+print("len(freqs_complex[0]): ", len(freqs_complex[0]))
+print("len(freqs_complex[0][0]): ", len(freqs_complex[0][0]))
+# exit()
+# print("-------------------  ")
+# print("filtered_frequencies_all_frames[0]: ", filtered_frequencies_all_frames[0])
+# print("len(filtered_frequencies_all_frames): ", len(filtered_frequencies_all_frames))
+# print("len(filtered_frequencies_all_frames[0]): ", len(filtered_frequencies_all_frames[0]))
+# print("len(filtered_frequencies_all_frames[0][0]): ", len(filtered_frequencies_all_frames[0][0]))
 
 def wave_height(frame, x, y, frequencies):
     return iift.ifft3(frame, y, x, frequencies, len(frequencies),len(frequencies[0]),len(frequencies[0][0]))
@@ -23,9 +54,6 @@ def wave_height2(x, y, frequencies):
 # set up a figure twice as wide as it is tall
 fig = plt.figure(figsize=plt.figaspect(0.5))
 
-print("Data length: ", len(data))
-print("Data[0] length: ", len(data[0]))
-print("Data[0][0] length: ", len(data[0][0]))
 
 
 #filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
