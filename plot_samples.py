@@ -16,36 +16,35 @@ frequencies_file = open('wave_frequencies_subset.json')
 frequencies_data = json.load(frequencies_file)
 freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_frequencies]) for frame_frequencies in frequencies_data['frequencies_per_frame']]
 
-# Filter out the x dimension here as well. If this works fine: move it to the convert file
 number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
-print("freqs_complex[0]: ", freqs_complex[0])
 
-# filter out the middle frequencies
+# filter out the rows for the middle frequencies
 # Instead of writing zeroes, remove the arrays from the list
+# TODO: This becomes 3 rows, should be 4. Go through them to see which one is missing
+# TODO: when this filtering works: move it to the convert file
 double_filtered_freqs_complex = []
 num_of_rows_to_include = 2
 for frame in range(len(freqs_complex)):
     frame_data = []
     double_filtered_freqs_complex.append(frame_data)
     for y in range(len(freqs_complex[frame])):
-        if y < num_of_rows_to_include or y > len(freqs_complex[frame])-num_of_rows_to_include:
+        if y < num_of_rows_to_include or y >= len(freqs_complex[frame])-num_of_rows_to_include:
             frame_data.append(freqs_complex[frame][y])
-
-print("Data length: ", len(data))
-print("Data[0] length: ", len(data[0]))
-print("Data[0][0] length: ", len(data[0][0]))
-print("+++++++++++++++++++  ")
+# print("Data length: ", len(data))
+# print("Data[0] length: ", len(data[0]))
+# print("Data[0][0] length: ", len(data[0][0]))
+# print("+++++++++++++++++++  ")
 print("len(freqs_complex): ", len(freqs_complex))
 print("len(freqs_complex[0]): ", len(freqs_complex[0]))
 print("len(freqs_complex[0][0]): ", len(freqs_complex[0][0]))
-print("freqs_complex[0]: ", freqs_complex[0])
-print("freqs_complex[0][21]: ", freqs_complex[0][21])
-print("-------------------  ")
+# print("freqs_complex[0]: ", freqs_complex[0])
+# print("freqs_complex[0][21]: ", freqs_complex[0][21])
+# print("-------------------  ")
 print("len(double_filtered_freqs_complex): ", len(double_filtered_freqs_complex))
 print("len(double_filtered_freqs_complex[0]): ", len(double_filtered_freqs_complex[0]))
 print("len(double_filtered_freqs_complex[0][0]): ", len(double_filtered_freqs_complex[0][0]))
-print("double_filtered_freqs_complex[0][0]: ", double_filtered_freqs_complex[0][0])
-print("double_filtered_freqs_complex[0][21]: ", double_filtered_freqs_complex[0][21])
+# print("double_filtered_freqs_complex[0][0]: ", double_filtered_freqs_complex[0][0])
+# print("double_filtered_freqs_complex[0][21]: ", double_filtered_freqs_complex[0][21])
 exit()
 # print("filtered_frequencies_all_frames[0]: ", filtered_frequencies_all_frames[0])
 # print("len(filtered_frequencies_all_frames): ", len(filtered_frequencies_all_frames))
