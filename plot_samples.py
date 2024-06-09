@@ -18,27 +18,35 @@ freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_f
 
 # Filter out the x dimension here as well. If this works fine: move it to the convert file
 number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
-print("freqs_complex[0][0]: ", freqs_complex[0][0])
+print("freqs_complex[0]: ", freqs_complex[0])
 
-# Hardcode filter out the middle frequencies, to see if the ifft works
-number_of_x_frequencies_to_include = 7 
+# filter out the middle frequencies
+# Instead of writing zeroes, remove the arrays from the list
+double_filtered_freqs_complex = []
+num_of_rows_to_include = 2
 for frame in range(len(freqs_complex)):
+    frame_data = []
+    double_filtered_freqs_complex.append(frame_data)
     for y in range(len(freqs_complex[frame])):
-        for x in range(len(freqs_complex[frame][y])):
-            if y > number_of_x_frequencies_to_include and y < len(freqs_complex[frame])-number_of_x_frequencies_to_include:
-                freqs_complex[frame][y][x] = 0j
-# filtered_frequencies_all_frames = [np.array([[z if True else 0 for zi, z in enumerate(column) if xi < number_of_frequencies_to_include or xi >= len(column)-number_of_frequencies_to_include ] for xi, column in enumerate(frame_frequencies)]) for frame_frequencies in data]
-
+        if y < num_of_rows_to_include or y > len(freqs_complex[frame])-num_of_rows_to_include:
+            frame_data.append(freqs_complex[frame][y])
 
 print("Data length: ", len(data))
 print("Data[0] length: ", len(data[0]))
 print("Data[0][0] length: ", len(data[0][0]))
-# print("+++++++++++++++++++  ")
+print("+++++++++++++++++++  ")
 print("len(freqs_complex): ", len(freqs_complex))
 print("len(freqs_complex[0]): ", len(freqs_complex[0]))
 print("len(freqs_complex[0][0]): ", len(freqs_complex[0][0]))
-# exit()
-# print("-------------------  ")
+print("freqs_complex[0]: ", freqs_complex[0])
+print("freqs_complex[0][21]: ", freqs_complex[0][21])
+print("-------------------  ")
+print("len(double_filtered_freqs_complex): ", len(double_filtered_freqs_complex))
+print("len(double_filtered_freqs_complex[0]): ", len(double_filtered_freqs_complex[0]))
+print("len(double_filtered_freqs_complex[0][0]): ", len(double_filtered_freqs_complex[0][0]))
+print("double_filtered_freqs_complex[0][0]: ", double_filtered_freqs_complex[0][0])
+print("double_filtered_freqs_complex[0][21]: ", double_filtered_freqs_complex[0][21])
+exit()
 # print("filtered_frequencies_all_frames[0]: ", filtered_frequencies_all_frames[0])
 # print("len(filtered_frequencies_all_frames): ", len(filtered_frequencies_all_frames))
 # print("len(filtered_frequencies_all_frames[0]): ", len(filtered_frequencies_all_frames[0]))
