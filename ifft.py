@@ -1,7 +1,7 @@
 import numpy as np
 import datetime
 # https://numpy.org/doc/stable/reference/routines.fft.html
-def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30, numberOfRowsToInclude=30):
+def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30, numberOfRowsToIncludeBottom=80, numberOfRowsToIncludeTop=80):
     """Note: lenX and lenY should be the total number of samples BEFORE subtracting the ignored frequencies"""
     # time_start = datetime.datetime.now()
     result = 0.0j
@@ -9,14 +9,14 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     # print("frame frequencies[0] length: ", len(fourierCoefficients[0]))
     #
     number_to_skip = lenY - numberOfFrequenciesToInclude * 2
-    numberOfRowsToSkip = lenX - numberOfRowsToInclude * 2
+    numberOfRowsToSkip = lenX - numberOfRowsToIncludeBottom * 2
     for m in range(len(fourierCoefficients)):
-        _m = None
-        if m < numberOfRowsToInclude:
-            _m = m
-        else:
-            _m = m + numberOfRowsToSkip
-
+      _m = m
+      if m < numberOfRowsToIncludeBottom or m >= numberOfRowsToIncludeTop:
+            # _m = m
+        # else:
+        #     _m = m + numberOfRowsToSkip
+        #
         for n in range(len(fourierCoefficients[0])):
             # print("n: ", n, "m: ", m)
             fourierCoefficient = fourierCoefficients[m][n]

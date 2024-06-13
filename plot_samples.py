@@ -117,6 +117,7 @@ while True:
         recreated_column_data = [ ifft.ifft2(0, y, freqs_complex[frame], lenX,lenY, frequencies_data['number_of_frequencies_to_include'], frequencies_data['number_of_rows_to_include'] ) for y in range(lenY)]
         time_end = datetime.datetime.now()
         c = time_end - time_start
+        print("Number of samples recreated: ", len(recreated_column_data))
         print("Time taken: ", c.total_seconds(), " seconds")
 
         plot_2d_2.plot(data[frame][0], color='blue')
