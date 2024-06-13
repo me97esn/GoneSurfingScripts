@@ -9,23 +9,29 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     # print("frame frequencies[0] length: ", len(fourierCoefficients[0]))
     #
     number_to_skip = lenY - numberOfFrequenciesToInclude * 2
-    for m in range(lenX):
+    numberOfRowsToSkip = lenX - numberOfRowsToInclude * 2
+    for m in range(len(fourierCoefficients)):
+        _m = None
         if m < numberOfRowsToInclude:
-            for n in range(len(fourierCoefficients[0])):
-                # print("n: ", n, "m: ", m)
-                fourierCoefficient = fourierCoefficients[m][n]
-                # Low frequencies are at the beginning of the list
-                if  n < numberOfFrequenciesToInclude:
-                    result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
-                    # print("--- fourierCoefficient: ", fourierCoefficient)
-                else:
-                    # Middle frequencies are not included in the list
-                    _n = n + number_to_skip
-                    # print("=== fourierCoefficient after skipping: ", fourierCoefficient)
+            _m = m
+        else:
+            _m = m + numberOfRowsToSkip
 
-                    # High frequencies are at the end of the list
-                    result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + _n*y/lenY))/(lenX*lenY)
-    # ti    me_end = datetime.datetime.now()
+        for n in range(len(fourierCoefficients[0])):
+            # print("n: ", n, "m: ", m)
+            fourierCoefficient = fourierCoefficients[m][n]
+            # Low frequencies are at the beginning of the list
+            if  n < numberOfFrequenciesToInclude:
+                result = result + fourierCoefficient*np.exp(2*np.pi*1j*(_m*x/lenX + n*y/lenY))/(lenX*lenY)
+                # print("--- fourierCoefficient: ", fourierCoefficient)
+            else:
+                # Middle frequencies are not included in the list
+                _n = n + number_to_skip
+                # print("=== fourierCoefficient after skipping: ", fourierCoefficient)
+
+                # High frequencies are at the end of the list
+                result = result + fourierCoefficient*np.exp(2*np.pi*1j*(_m*x/lenX + _n*y/lenY))/(lenX*lenY)
+    # time_end = datetime.datetime.now()
     # c = time_end - time_start
 
     # print("Time taken: ", c.total_seconds(), " seconds")

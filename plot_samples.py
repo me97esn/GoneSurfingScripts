@@ -22,7 +22,7 @@ number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_in
 # Instead of writing zeroes, remove the arrays from the list
 # TODO: when this filtering works: move it to the convert file
 double_filtered_freqs_complex = []
-num_of_rows_to_include = 2
+num_of_rows_to_include = 30
 for frame in range(len(freqs_complex)):
     frame_data = []
     double_filtered_freqs_complex.append(frame_data)
