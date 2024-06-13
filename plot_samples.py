@@ -8,12 +8,21 @@ import datetime
 
 f = open('wave_samples.json')
 data = json.load(f)
-
+print("Data original: ")
+print("len(data) frames: ", len(data))
+print("len(data[0]) rows: ", len(data[0]))
+print("len(data[0][0]) columns: ", len(data[0][0]))
 
 
 # load the frequencies file, and convert all of the frequency arrays to complex numbers
 frequencies_file = open('wave_frequencies_subset.json')
 frequencies_data = json.load(frequencies_file)
+
+print("Column filtered: ")
+print("len(frequencies_data['frequencies_per_frame']): ", len(frequencies_data['frequencies_per_frame']))
+print("len(frequencies_data['frequencies_per_frame'][0]): ", len(frequencies_data['frequencies_per_frame'][0]))
+print("len(frequencies_data['frequencies_per_frame'][0][0]): ", len(frequencies_data['frequencies_per_frame'][0][0]))
+
 freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_frequencies]) for frame_frequencies in frequencies_data['frequencies_per_frame']]
 
 number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
@@ -22,13 +31,18 @@ number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_in
 # Instead of writing zeroes, remove the arrays from the list
 # TODO: when this filtering works: move it to the convert file
 double_filtered_freqs_complex = []
-num_of_rows_to_include = 30
+num_of_rows_to_include = 20
 for frame in range(len(freqs_complex)):
     frame_data = []
     double_filtered_freqs_complex.append(frame_data)
     for y in range(len(freqs_complex[frame])):
         if y < num_of_rows_to_include or y >= len(freqs_complex[frame])-num_of_rows_to_include:
             frame_data.append(freqs_complex[frame][y])
+
+print("Row and column filtered: ")
+print("len(double_filtered_freqs_complex): ", len(double_filtered_freqs_complex))
+print("len(double_filtered_freqs_complex[0]): ", len(double_filtered_freqs_complex[0]))
+print("len(double_filtered_freqs_complex[0][0]): ", len(double_filtered_freqs_complex[0][0]))
 
 def wave_height(frame, x, y, frequencies):
     return iift.ifft3(frame, y, x, frequencies, len(frequencies),len(frequencies[0]),len(frequencies[0][0]))
@@ -58,11 +72,6 @@ samples_3d_plot.set_ylabel('y', labelpad=20)
 samples_3d_plot.set_zlabel('z', labelpad=200)
 start_frame = 752
 
-# Filter the frequencies of all of the frames
-# number_of_freqs = 15
-# frequencies_all_frames = [np.fft.fftn(frame) for frame in data]
-# filtered_frequencies_all_frames = [np.array([[z for zi, z in enumerate(arr) if zi < number_of_freqs or zi >= len(arr)-number_of_freqs] for arr in frame_frequencies]) for frame_frequencies in frequencies_all_frames]
-#
 while True:
     for frame in range(1, len(data)):
         # First, clear the plots and then set the limits to clear them but restart them in the same dimensions each time
