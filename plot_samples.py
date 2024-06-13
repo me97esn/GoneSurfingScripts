@@ -30,19 +30,19 @@ number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_in
 # filter out the rows for the middle frequencies
 # Instead of writing zeroes, remove the arrays from the list
 # TODO: when this filtering works: move it to the convert file
-double_filtered_freqs_complex = []
-num_of_rows_to_include = 20
-for frame in range(len(freqs_complex)):
-    frame_data = []
-    double_filtered_freqs_complex.append(frame_data)
-    for y in range(len(freqs_complex[frame])):
-        if y < num_of_rows_to_include or y >= len(freqs_complex[frame])-num_of_rows_to_include:
-            frame_data.append(freqs_complex[frame][y])
-
-print("Row and column filtered: ")
-print("len(double_filtered_freqs_complex): ", len(double_filtered_freqs_complex))
-print("len(double_filtered_freqs_complex[0]): ", len(double_filtered_freqs_complex[0]))
-print("len(double_filtered_freqs_complex[0][0]): ", len(double_filtered_freqs_complex[0][0]))
+# double_filtered_freqs_complex = []
+# num_of_rows_to_include = 30
+# for frame in range(len(freqs_complex)):
+#     frame_data = []
+#     double_filtered_freqs_complex.append(frame_data)
+#     for y in range(len(freqs_complex[frame])):
+#         if y < num_of_rows_to_include or y >= len(freqs_complex[frame])-num_of_rows_to_include:
+#             frame_data.append(freqs_complex[frame][y])
+#
+# print("Row and column filtered: ")
+# print("len(double_filtered_freqs_complex): ", len(double_filtered_freqs_complex))
+# print("len(double_filtered_freqs_complex[0]): ", len(double_filtered_freqs_complex[0]))
+# print("len(double_filtered_freqs_complex[0][0]): ", len(double_filtered_freqs_complex[0][0]))
 
 def wave_height(frame, x, y, frequencies):
     return iift.ifft3(frame, y, x, frequencies, len(frequencies),len(frequencies[0]),len(frequencies[0][0]))
@@ -113,7 +113,8 @@ while True:
         plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
         lenX = frequencies_data['len_x']
         lenY = frequencies_data['len_y']
-        recreated_column_data = [ ifft.ifft2(0, y, double_filtered_freqs_complex[frame], lenX,lenY, frequencies_data['number_of_frequencies_to_include'], num_of_rows_to_include) for y in range(lenY)]
+        recreated_column_data = [ ifft.ifft2(0, y, freqs_complex[frame], lenX,lenY, frequencies_data['number_of_frequencies_to_include'], frequencies_data['number_of_rows_to_include'] ) for y in range(lenY)]
+        # recreated_column_data = [ ifft.ifft2(0, y, double_filtered_freqs_complex[frame], lenX,lenY, frequencies_data['number_of_frequencies_to_include'], num_of_rows_to_include) for y in range(lenY)]
 
         plot_2d_2.plot(data[frame][0], color='blue')
         plot_2d_2.plot(recreated_column_data, color='red')
