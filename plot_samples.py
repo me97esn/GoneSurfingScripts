@@ -57,7 +57,7 @@ fig = plt.figure(figsize=plt.figaspect(0.5))
 
 
 #filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
-samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
+# samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
 plot_2d = fig.add_subplot(3, 1, 2)
 plot_2d_2 = fig.add_subplot(2, 2, 2)
 
@@ -67,23 +67,23 @@ y = np.arange(0, len(data[0]),1)
 X, Y = np.meshgrid(x, y)
 
 plt.show(block=False)
-samples_3d_plot.set_xlabel('x', labelpad=20)
-samples_3d_plot.set_ylabel('y', labelpad=20)
-samples_3d_plot.set_zlabel('z', labelpad=200)
+# samples_3d_plot.set_xlabel('x', labelpad=20)
+# samples_3d_plot.set_ylabel('y', labelpad=20)
+# samples_3d_plot.set_zlabel('z', labelpad=200)
 start_frame = 752
 
 while True:
     for frame in range(1, len(data)):
         # First, clear the plots and then set the limits to clear them but restart them in the same dimensions each time
-        samples_3d_plot.clear()
+        # samples_3d_plot.clear()
         #filtered_3d_plot.clear()
         plot_2d.clear()
         plot_2d_2.clear()
 
-        for axis in [samples_3d_plot]:
-            axis.set_zlim3d(0, 150)
-            axis.set_ylim3d(0, len(data[0]))
-            axis.set_xlim3d(0, len(data[0][0]))
+        # for axis in [samples_3d_plot]:
+        #     axis.set_zlim3d(0, 150)
+        #     axis.set_ylim3d(0, len(data[0]))
+        #     axis.set_xlim3d(0, len(data[0][0]))
 
         plot_2d.set_xlim(0, len(data[0][0]))
         plot_2d.set_ylim(15, 25)
@@ -99,12 +99,12 @@ while True:
         # print("freqs_complex: \n", freqs_complex[frame][0])
         # exit()
 
-        samples_3d_plot.set_xlabel('Original samples, frame: ' + str(frame+start_frame))
+        # samples_3d_plot.set_xlabel('Original samples, frame: ' + str(frame+start_frame))
         #filtered_3d_plot.set_xlabel('filtered samples, using numpy.fft.fftn')
 
         # get the 2d array of all of the samples for this frame
         Z = np.array(data[frame])
-        samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
+        # samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.cividis)
 
         plot_2d.set_title('Original samples, and numpy ifft for the filtered frequencies, for one column')
         plot_2d.plot(data[frame][0], color='blue')
@@ -113,8 +113,11 @@ while True:
         plot_2d_2.set_title('Original samples, and my own ifft2 implementation for the filtered frequencies, for one column')
         lenX = frequencies_data['len_x']
         lenY = frequencies_data['len_y']
+        time_start = datetime.datetime.now()
         recreated_column_data = [ ifft.ifft2(0, y, freqs_complex[frame], lenX,lenY, frequencies_data['number_of_frequencies_to_include'], frequencies_data['number_of_rows_to_include'] ) for y in range(lenY)]
-        # recreated_column_data = [ ifft.ifft2(0, y, double_filtered_freqs_complex[frame], lenX,lenY, frequencies_data['number_of_frequencies_to_include'], num_of_rows_to_include) for y in range(lenY)]
+        time_end = datetime.datetime.now()
+        c = time_end - time_start
+        print("Time taken: ", c.total_seconds(), " seconds")
 
         plot_2d_2.plot(data[frame][0], color='blue')
         plot_2d_2.plot(recreated_column_data, color='red')
