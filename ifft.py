@@ -6,15 +6,14 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     result = 0.0j
     number_to_skip = lenY - numberOfFrequenciesToInclude * 2
     numberOfRowsToSkip = lenX - numberOfRowsToIncludeBottom * 2
-    print("numberOfFrequenciesToInclude: ", numberOfFrequenciesToInclude)
-    print("numberOfRowsToIncludeTop: ", numberOfRowsToIncludeTop)
-    print("numberOfRowsToIncludeBottom: ", numberOfRowsToIncludeBottom)
 
     for m in range(len(fourierCoefficients)):
-        _m = m
+        _m = None
         if m < numberOfRowsToIncludeBottom:# or m >= len(fourierCoefficients)-numberOfRowsToIncludeTop:
-            print("including row: ", m) 
+            print("including row: ", m)
+            _m = m
         elif m >= len(fourierCoefficients)-numberOfRowsToIncludeTop:
+            _m = m + numberOfRowsToSkip
             print("second including row: ", m)
         else:
             continue
