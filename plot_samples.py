@@ -7,7 +7,7 @@ import datetime
 
 
 f = open('wave_samples.json')
-data = json.load(f)
+data = json.load(f)["samples"]
 print("Data original: ")
 print("len(data) frames: ", len(data))
 print("len(data[0]) rows: ", len(data[0]))
