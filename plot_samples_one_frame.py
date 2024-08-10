@@ -59,7 +59,9 @@ fig = plt.figure(figsize=plt.figaspect(0.5))
 # #
 # #
 # # #filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
+# Scale the plot to make it more similar to the blender view
 samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
+samples_3d_plot.set_zlim3d(-20,50)
 # #
 # # # Setup the dimensions of the plot
 # # x = np.arange(0, len(data[0][0]), 1)
