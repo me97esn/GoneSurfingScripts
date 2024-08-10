@@ -30,17 +30,15 @@ def chunks(lst, n):
 #
 f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp/752.json')
 data = json.load(f)
-height = data['height']
-coordinates = np.array(data['coordinates'])
-print('coordinates[10]', coordinates[:10])
-x_coordinates = coordinates[:,0]
-y_coordinates = coordinates[:,1]
-z_values = np.array(height)
+# TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
+x_coordinates = data['x_coordinates']
+y_coordinates = data['y_coordinates']
+z_values = data['z_coordinates']
 
 X = np.array(list(chunks(x_coordinates, 2)))
 Y = np.array(list(chunks(y_coordinates, 2)))
 Z = np.array(list(chunks(z_values, 2)))
-print('X', X)
+
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
