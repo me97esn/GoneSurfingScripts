@@ -33,11 +33,15 @@ data = json.load(f)
 # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
 x_coordinates = data['x_coordinates']
 y_coordinates = data['y_coordinates']
-z_values = data['z_coordinates']
+z_coordinates= data['z_coordinates']
 
-X = np.array(list(chunks(x_coordinates, 2)))
-Y = np.array(list(chunks(y_coordinates, 2)))
-Z = np.array(list(chunks(z_values, 2)))
+# x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_values)))
+
+# Blender up is not the same as matplotlib up
+Z = np.array(list(chunks(x_coordinates, 2)))
+X = np.array(list(chunks(y_coordinates, 2)))
+Y = np.array(list(chunks(z_coordinates, 2)))
+
 
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
