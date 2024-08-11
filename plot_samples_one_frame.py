@@ -28,21 +28,49 @@ def chunks(lst, n):
 # print('points', points)
 #
 #
-f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp/752.json')
-data = json.load(f)
-# TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
-x_coordinates = data['x_coordinates']
-y_coordinates = data['y_coordinates']
-z_coordinates= data['z_coordinates']
+def plot_sample_file():
+    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp/752.json')
+    data = json.load(f)
+    # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
+    x_coordinates = data['x_coordinates']
+    y_coordinates = data['y_coordinates']
+    z_coordinates= data['z_coordinates']
 
-# x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_values)))
+    # x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_values)))
 
-# Blender up is not the same as matplotlib up
-Z = np.array(list(chunks(x_coordinates, 2)))
-X = np.array(list(chunks(y_coordinates, 2)))
-Y = np.array(list(chunks(z_coordinates, 2)))
+    # Blender up is not the same as matplotlib up
+    Z = np.array(list(chunks(x_coordinates, 2)))
+    X = np.array(list(chunks(y_coordinates, 2)))
+    Y = np.array(list(chunks(z_coordinates, 2)))
+
+    fig = plt.figure(figsize=plt.figaspect(0.5))
+    samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
+    samples_3d_plot.set_zlim3d(-20,50)
+    samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm)
+
+def plot_vertices_converted_to_samples_non_formatted():
+    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_non_formatted.json')
+    data = json.load(f)['752']
+    # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
+    x_coordinates = np.array(data['coordinates'])[:,0]
+    y_coordinates = np.array(data['coordinates'])[:,1]
+    z_coordinates= data['samples']
+
+    # x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_values)))
+
+    # Blender up is not the same as matplotlib up
+    Z = np.array(list(chunks(x_coordinates, 2)))
+    X = np.array(list(chunks(y_coordinates, 2)))
+    Y = np.array(list(chunks(z_coordinates, 2)))
+
+    fig = plt.figure(figsize=plt.figaspect(0.5))
+    samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
+    samples_3d_plot.set_zlim3d(-20,50)
+    samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm)
 
 
+# plot_sample_file()
+plot_vertices_converted_to_samples_non_formatted()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
@@ -54,14 +82,11 @@ Y = np.array(list(chunks(z_coordinates, 2)))
 # #
 # #
 # # # set up a figure twice as wide as it is tall
-fig = plt.figure(figsize=plt.figaspect(0.5))
 # #
 # #
 # #
 # # #filtered_3d_plot = fig.add_subplot(1, 2, 2, projection='3d')
 # Scale the plot to make it more similar to the blender view
-samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
-samples_3d_plot.set_zlim3d(-20,50)
 # #
 # # # Setup the dimensions of the plot
 # # x = np.arange(0, len(data[0][0]), 1)
@@ -76,5 +101,4 @@ samples_3d_plot.set_zlim3d(-20,50)
 # # Z = np.array(data[frame])
 # # samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.c)
 # print('coordinates[:,0]', np.array(coordinates)[:,0])
-samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm)
 plt.show()
