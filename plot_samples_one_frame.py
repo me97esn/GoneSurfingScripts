@@ -32,16 +32,22 @@ def plot_sample_file():
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp/752.json')
     data = json.load(f)
     # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
-    x_coordinates = data['x_coordinates']
-    y_coordinates = data['y_coordinates']
+    x_coordinates = np.array(data['x_coordinates'])
+    y_coordinates = np.array(data['y_coordinates'])
+    print('x_coordinates', x_coordinates)
+    print('y_coordinates', y_coordinates)
+    print('data[coordinates]', np.array(data['coordinates']))
+    # TODO: This does not give the same result!
+    # x_coordinates = [x for x,y in data['coordinates']]
+    # y_coordinates = [y for x,y in data['coordinates']]
+    x_coordinates = np.array(data['coordinates'])[:,0]
+    y_coordinates = np.array(data['coordinates'])[:,1]
     z_coordinates= data['z_coordinates']
 
-    # x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_values)))
 
-    # Blender up is not the same as matplotlib up
-    Z = np.array(list(chunks(x_coordinates, 2)))
-    X = np.array(list(chunks(y_coordinates, 2)))
-    Y = np.array(list(chunks(z_coordinates, 2)))
+    X = np.array(list(chunks(x_coordinates, 2)))
+    Y = np.array(list(chunks(y_coordinates, 2)))
+    Z = np.array(list(chunks(z_coordinates, 2)))
 
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
@@ -59,9 +65,9 @@ def plot_vertices_converted_to_samples_non_formatted():
     # x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_values)))
 
     # Blender up is not the same as matplotlib up
-    Z = np.array(list(chunks(x_coordinates, 2)))
-    X = np.array(list(chunks(y_coordinates, 2)))
-    Y = np.array(list(chunks(z_coordinates, 2)))
+    X = np.array(list(chunks(x_coordinates, 2)))
+    Y = np.array(list(chunks(y_coordinates, 2)))
+    Z = np.array(list(chunks(z_coordinates, 2)))
 
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
@@ -69,7 +75,7 @@ def plot_vertices_converted_to_samples_non_formatted():
     samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm)
 
 
-# plot_sample_file()
+plot_sample_file()
 plot_vertices_converted_to_samples_non_formatted()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
