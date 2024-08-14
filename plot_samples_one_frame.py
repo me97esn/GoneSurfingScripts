@@ -65,7 +65,8 @@ def plot_vertices_converted_to_samples_non_formatted():
     print('y_coordinates', y_coordinates)
     print('z_coordinates', z_coordinates)
 
-    # x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_values)))
+    # Sort the coordinates
+    x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_coordinates)))
     print('len x_coordinates', len(x_coordinates))
     X = np.array(list(chunks(x_coordinates, 2)))
     Y = np.array(list(chunks(y_coordinates, 2)))
@@ -74,7 +75,7 @@ def plot_vertices_converted_to_samples_non_formatted():
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm)
+    samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm, linewidth=0, antialiased=False)
 
 
 # plot_sample_file()
