@@ -12,9 +12,14 @@ from scipy.interpolate import griddata
 # Z = np.array([[10,10],[20,20]])
 
 def chunks(lst, n):
+    
     """Yield successive n-sized chunks from lst."""
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+    if(len(lst) % n != 0):
+        _lst = lst[0: -1]
+    else:
+        _lst = lst
+    for i in range(0, len(_lst), n):
+        yield _lst[i:i + n]
 
 # grid_x, grid_y = np.mgrid[0:1:3j, 0:1:6j]
 # print('grid_x', grid_x)
@@ -34,16 +39,11 @@ def plot_sample_file():
     # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
     x_coordinates = np.array(data['x_coordinates'])
     y_coordinates = np.array(data['y_coordinates'])
-    print('x_coordinates', x_coordinates)
-    print('y_coordinates', y_coordinates)
-    print('data[coordinates]', np.array(data['coordinates']))
-    # TODO: This does not give the same result!
     # x_coordinates = [x for x,y in data['coordinates']]
     # y_coordinates = [y for x,y in data['coordinates']]
     x_coordinates = np.array(data['coordinates'])[:,0]
     y_coordinates = np.array(data['coordinates'])[:,1]
     z_coordinates= data['z_coordinates']
-
 
     X = np.array(list(chunks(x_coordinates, 2)))
     Y = np.array(list(chunks(y_coordinates, 2)))
@@ -60,11 +60,13 @@ def plot_vertices_converted_to_samples_non_formatted():
     # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
     x_coordinates = np.array(data['coordinates'])[:,0]
     y_coordinates = np.array(data['coordinates'])[:,1]
-    z_coordinates= data['samples']
+    z_coordinates= np.array(data['samples'])
+    print('x_coordinates', x_coordinates)
+    print('y_coordinates', y_coordinates)
+    print('z_coordinates', z_coordinates)
 
     # x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_values)))
-
-    # Blender up is not the same as matplotlib up
+    print('len x_coordinates', len(x_coordinates))
     X = np.array(list(chunks(x_coordinates, 2)))
     Y = np.array(list(chunks(y_coordinates, 2)))
     Z = np.array(list(chunks(z_coordinates, 2)))
@@ -75,7 +77,7 @@ def plot_vertices_converted_to_samples_non_formatted():
     samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm)
 
 
-plot_sample_file()
+# plot_sample_file()
 plot_vertices_converted_to_samples_non_formatted()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
