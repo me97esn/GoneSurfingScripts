@@ -12,7 +12,6 @@ from scipy.interpolate import griddata
 # Z = np.array([[10,10],[20,20]])
 
 def chunks(lst, n):
-    
     """Yield successive n-sized chunks from lst."""
     if(len(lst) % n != 0):
         _lst = lst[0: -1]
@@ -75,7 +74,8 @@ def plot_vertices_converted_to_samples_non_formatted():
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm, linewidth=0, antialiased=False)
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=10)  
+    # samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm, linewidth=0, antialiased=False)
 
 
 # plot_sample_file()
