@@ -54,19 +54,13 @@ def plot_sample_file():
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
 
 def plot_vertices_converted_to_samples_non_formatted():
-    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_non_formatted.json')
+    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height.json')
     data = json.load(f)['752']
     # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
     x_coordinates = np.array(data['coordinates'])[:,0]
     y_coordinates = np.array(data['coordinates'])[:,1]
     z_coordinates= np.array(data['samples'])
-    print('x_coordinates', x_coordinates)
-    print('y_coordinates', y_coordinates)
-    print('z_coordinates', z_coordinates)
 
-    # Sort the coordinates
-    x_coordinates, y_coordinates, z_coordinates = zip(*sorted(zip(x_coordinates, y_coordinates, z_coordinates)))
-    print('len x_coordinates', len(x_coordinates))
     X = np.array(list(chunks(x_coordinates, 2)))
     Y = np.array(list(chunks(y_coordinates, 2)))
     Z = np.array(list(chunks(z_coordinates, 2)))
