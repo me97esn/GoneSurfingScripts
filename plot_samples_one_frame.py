@@ -73,9 +73,10 @@ def plot_samples():
 
 
 def plot_fft_to_ifft():
-    ""
+
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_frequencies.json')
     frequencies_data = json.load(f)
+
 
     number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
     frequencies_per_frame = frequencies_data['frequencies_per_frame']
@@ -83,6 +84,23 @@ def plot_fft_to_ifft():
     freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_frequencies]) for frame_frequencies in frequencies_data['frequencies_per_frame']]
 
     number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
+    number_of_rows_to_include = frequencies_data['number_of_rows_to_include']
+    lenX = frequencies_data['len_x']
+    lenY = frequencies_data['len_y']
+
+    # TODO: this is only one column, at index 0. Need to use all of the columns
+    recreated_column_data = [ ifft.ifft2(0, y, freqs_complex[0], lenX,lenY, number_of_frequencies_to_include, number_of_rows_to_include, number_of_rows_to_include ) for y in range(lenY)]
+    samples_3d_plot = plt.figure().add_subplot(111, projection='3d')
+
+    print('recreated_column_data', recreated_column_data)
+    print('len(recreated_column_data)', len(recreated_column_data))
+
+    x = np.arange(0, len(recreated_column_data), 1)
+    y = np.arange(0, len( recreated_column_data[0] ),1)
+    X, Y = np.meshgrid(x, y)
+
+    samples_3d_plot.scatter(X, Y, recreated_column_data)
+
 
 # plot_bobj_to_json_data()
 # plot_samples()
