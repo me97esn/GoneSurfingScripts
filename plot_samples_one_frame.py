@@ -7,6 +7,8 @@ import datetime
 import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
 
+frame = 752
+
 # X = np.array([[0, 1], [2, 3]])
 # Y = np.array([[0,1], [2,3]])
 # Z = np.array([[10,10],[20,20]])
@@ -32,8 +34,8 @@ def chunks(lst, n):
 # print('points', points)
 #
 #
-def plot_sample_file():
-    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp/752.json')
+def plot_bobj_to_json_data():
+    f = open(f'/hdd/gone_surfing_exports/medium_wave_left/tmp/{frame}.json')
     data = json.load(f)
     # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
     x_coordinates = np.array(data['x_coordinates'])
@@ -53,10 +55,9 @@ def plot_sample_file():
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
 
-def plot_vertices_converted_to_samples_non_formatted():
+def plot_samples():
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height.json')
-    data = json.load(f)['752']
-    # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
+    data = json.load(f)[f'{frame}']
     x_coordinates = np.array(data['coordinates'])[:,0]
     y_coordinates = np.array(data['coordinates'])[:,1]
     z_coordinates= np.array(data['samples'])
@@ -69,11 +70,10 @@ def plot_vertices_converted_to_samples_non_formatted():
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
-    # samples_3d_plot.plot_surface(X, Y, Z, cmap = plt.cm.coolwarm, linewidth=0, antialiased=False)
 
 
-plot_sample_file()
-plot_vertices_converted_to_samples_non_formatted()
+plot_bobj_to_json_data()
+plot_samples()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
