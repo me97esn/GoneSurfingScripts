@@ -72,8 +72,21 @@ def plot_samples():
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
 
 
-plot_bobj_to_json_data()
-plot_samples()
+def plot_fft_to_ifft():
+    ""
+    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_frequencies.json')
+    frequencies_data = json.load(f)
+
+    number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
+    frequencies_per_frame = frequencies_data['frequencies_per_frame']
+
+    freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_frequencies]) for frame_frequencies in frequencies_data['frequencies_per_frame']]
+
+    number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
+
+# plot_bobj_to_json_data()
+# plot_samples()
+plot_fft_to_ifft()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
