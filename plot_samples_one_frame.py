@@ -34,6 +34,7 @@ def chunks(lst, n):
 # print('points', points)
 #
 #
+
 def plot_bobj_to_json_data():
     f = open(f'/hdd/gone_surfing_exports/medium_wave_left/tmp/{frame}.json')
     data = json.load(f)
@@ -55,7 +56,7 @@ def plot_bobj_to_json_data():
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
 
-def plot_samples_file(filepath):
+def plot_samples():
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height.json')
     data = json.load(f)[f'{frame}']
     x_coordinates = np.array(data['coordinates'])[:,0]
@@ -69,15 +70,7 @@ def plot_samples_file(filepath):
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.5, edgecolors='black', s=0.1)  
-
-def plot_samples_from_bobj():
-    filepath = '/hdd/gone_surfing_exports/medium_wave_left/tmp/wave_samples.json'
-    plot_samples_file(filepath)
-
-def plot_samples_from_blender_sampling():
-    filepath = '/hdd/gone_surfing_exports/medium_wave_left/tmp/wave_samples.json'
-    plot_samples_file(filepath)
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
 
 def plot_fft_to_ifft():
     # TODO: Which frame to use?
@@ -107,11 +100,10 @@ def plot_fft_to_ifft():
 
     samples_3d_plot.scatter(X, Y, recreated_column_data)
 
+plot_bobj_to_json_data()
+plot_samples()
 
-# plot_bobj_to_json_data()
-# plot_samples_from_bobj()
-# plot_fft_to_ifft()
-plot_samples_from_blender_sampling()
+# plot_samples_from_blender_sampling()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
