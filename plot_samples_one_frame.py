@@ -55,7 +55,7 @@ def plot_bobj_to_json_data():
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
 
-def plot_samples():
+def plot_samples_file(filepath):
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height.json')
     data = json.load(f)[f'{frame}']
     x_coordinates = np.array(data['coordinates'])[:,0]
@@ -69,11 +69,18 @@ def plot_samples():
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.5, edgecolors='black', s=0.1)  
 
+def plot_samples_from_bobj():
+    filepath = '/hdd/gone_surfing_exports/medium_wave_left/tmp/wave_samples.json'
+    plot_samples_file(filepath)
+
+def plot_samples_from_blender_sampling():
+    filepath = '/hdd/gone_surfing_exports/medium_wave_left/tmp/wave_samples.json'
+    plot_samples_file(filepath)
 
 def plot_fft_to_ifft():
-
+    # TODO: Which frame to use?
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_frequencies.json')
     frequencies_data = json.load(f)
 
@@ -81,30 +88,30 @@ def plot_fft_to_ifft():
     number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
     frequencies_per_frame = frequencies_data['frequencies_per_frame']
 
+    # Frequencies for all frames
     freqs_complex = [np.array([[complex(z[0], z[1]) for z in arr] for arr in frame_frequencies]) for frame_frequencies in frequencies_data['frequencies_per_frame']]
 
     number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
     number_of_rows_to_include = frequencies_data['number_of_rows_to_include']
-    lenX = frequencies_data['len_x']
-    lenY = frequencies_data['len_y']
+    lenX = int(frequencies_data['len_x'] / 5 )# Subset to make this faster
+    lenY = int(frequencies_data['len_y'] / 5)
+    frequencies_first_frame = freqs_complex[0]
 
-    # TODO: this is only one column, at index 0. Need to use all of the columns
-    recreated_column_data = [ ifft.ifft2(0, y, freqs_complex[0], lenX,lenY, number_of_frequencies_to_include, number_of_rows_to_include, number_of_rows_to_include ) for y in range(lenY)]
+    recreated_column_data = [[ ifft.ifft2(x, y, frequencies_first_frame, lenX,lenY, number_of_frequencies_to_include, number_of_rows_to_include, number_of_rows_to_include ) for y in range(lenY)] for x in range(lenX)]
     samples_3d_plot = plt.figure().add_subplot(111, projection='3d')
-
-    print('recreated_column_data', recreated_column_data)
-    print('len(recreated_column_data)', len(recreated_column_data))
 
     x = np.arange(0, len(recreated_column_data), 1)
     y = np.arange(0, len( recreated_column_data[0] ),1)
+    # y = np.arange(0, 1,1)
     X, Y = np.meshgrid(x, y)
 
     samples_3d_plot.scatter(X, Y, recreated_column_data)
 
 
 # plot_bobj_to_json_data()
-# plot_samples()
-plot_fft_to_ifft()
+# plot_samples_from_bobj()
+# plot_fft_to_ifft()
+plot_samples_from_blender_sampling()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
