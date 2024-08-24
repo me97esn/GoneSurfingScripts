@@ -76,11 +76,15 @@ def plot_samples_from_blender_sampling():
     X = np.array(list(chunks(x, 2)))
     Y = np.array(list(chunks(y, 2)))
     Z = np.array(list(chunks(z, 2)))
+    print('X', X)
+    print('Y', Y)
+    print('Z', Z)
+
 
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     # samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.scatter(X, X, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)
 
 
 
