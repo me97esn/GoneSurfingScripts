@@ -22,27 +22,11 @@ def chunks(lst, n):
     for i in range(0, len(_lst), n):
         yield _lst[i:i + n]
 
-# grid_x, grid_y = np.mgrid[0:1:3j, 0:1:6j]
-# print('grid_x', grid_x)
-# print('grid_y', grid_y)
-#
-# points = np.random.rand(10, 2)
-# print('points', points)
-# print('points[:,0]', points[:,0]) 
-# print('points[:,1]', points[:,1])
-#
-# print('points', points)
-#
-#
-
 def plot_bobj_to_json_data():
     f = open(f'/hdd/gone_surfing_exports/medium_wave_left/tmp/{frame}.json')
     data = json.load(f)
-    # TODO: these coordinates are not sorted. It seems that 3d plot requires sorted coordinates?
     x_coordinates = np.array(data['x_coordinates'])
     y_coordinates = np.array(data['y_coordinates'])
-    # x_coordinates = [x for x,y in data['coordinates']]
-    # y_coordinates = [y for x,y in data['coordinates']]
     x_coordinates = np.array(data['coordinates'])[:,0]
     y_coordinates = np.array(data['coordinates'])[:,1]
     z_coordinates= data['z_coordinates']
@@ -51,13 +35,17 @@ def plot_bobj_to_json_data():
     Y = np.array(list(chunks(y_coordinates, 2)))
     Z = np.array(list(chunks(z_coordinates, 2)))
 
+    print('X', X)
+    print('Y', Y)
+    print('Z', Z)
+
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
 
 def plot_samples():
-    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height.json')
+    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height-per-frame.json')
     data = json.load(f)[f'{frame}']
     x_coordinates = np.array(data['coordinates'])[:,0]
     y_coordinates = np.array(data['coordinates'])[:,1]
@@ -70,10 +58,33 @@ def plot_samples():
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)  
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)
+
+def flatten_2d_array(array):
+    return [item for sublist in array for item in sublist]
+
+def plot_samples_from_blender_sampling():
+    f = open('/home/emil/workspace/GoneSurfingScripts/wave_samples.json')
+    data = json.load(f)
+    coordinates_data = np.array(data['coordinates'][0])
+    samples_data = data['samples'][0]
+    coordinates = np.array(flatten_2d_array(coordinates_data))
+    x = coordinates[:,0]
+    y = coordinates[:,1]
+    z = flatten_2d_array(samples_data)
+
+    X = np.array(list(chunks(x, 2)))
+    Y = np.array(list(chunks(y, 2)))
+    Z = np.array(list(chunks(z, 2)))
+
+    fig = plt.figure(figsize=plt.figaspect(0.5))
+    samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
+    # samples_3d_plot.set_zlim3d(-20,50)
+    samples_3d_plot.scatter(X, X, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)
+
+
 
 def plot_fft_to_ifft():
-    # TODO: Which frame to use?
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_frequencies.json')
     frequencies_data = json.load(f)
 
@@ -86,8 +97,8 @@ def plot_fft_to_ifft():
 
     number_of_frequencies_to_include = frequencies_data['number_of_frequencies_to_include']
     number_of_rows_to_include = frequencies_data['number_of_rows_to_include']
-    lenX = int(frequencies_data['len_x'] / 5 )# Subset to make this faster
-    lenY = int(frequencies_data['len_y'] / 5)
+    lenX = int(frequencies_data['len_x'] / 1 )# Subset to make this faster
+    lenY = int(frequencies_data['len_y'] / 1)
     frequencies_first_frame = freqs_complex[0]
 
     recreated_column_data = [[ ifft.ifft2(x, y, frequencies_first_frame, lenX,lenY, number_of_frequencies_to_include, number_of_rows_to_include, number_of_rows_to_include ) for y in range(lenY)] for x in range(lenX)]
@@ -100,10 +111,10 @@ def plot_fft_to_ifft():
 
     samples_3d_plot.scatter(X, Y, recreated_column_data)
 
-plot_bobj_to_json_data()
-plot_samples()
-
-# plot_samples_from_blender_sampling()
+# plot_bobj_to_json_data()
+# plot_samples()
+# plot_fft_to_ifft()
+plot_samples_from_blender_sampling()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
