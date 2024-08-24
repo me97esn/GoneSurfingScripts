@@ -88,7 +88,7 @@ def plot_samples_from_blender_fft_ifft():
     lenY = len(all_frequencies[0])
 
     # Convert back using my own implementation
-    ifft_samples = [[ ifft.ifft2(x, y, all_frequencies, lenX,lenY) for y in range(lenY)] for x in range(lenX)]
+    ifft_samples = [[ ifft.ifft2(x, y, all_frequencies, lenX,lenY, 5,5,5) for y in range(lenY)] for x in range(lenX)]
     coordinates_data = np.array(data['coordinates'][0])
     coordinates = np.array(flatten_2d_array(coordinates_data))
     x = coordinates[:,0]
