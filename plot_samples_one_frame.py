@@ -35,10 +35,6 @@ def plot_bobj_to_json_data():
     Y = np.array(list(chunks(y_coordinates, 2)))
     Z = np.array(list(chunks(z_coordinates, 2)))
 
-    print('X', X)
-    print('Y', Y)
-    print('Z', Z)
-
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
@@ -58,7 +54,7 @@ def plot_samples():
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.1, edgecolors='black', s=0.1)
 
 def flatten_2d_array(array):
     return [item for sublist in array for item in sublist]
@@ -76,15 +72,40 @@ def plot_samples_from_blender_sampling():
     X = np.array(list(chunks(x, 2)))
     Y = np.array(list(chunks(y, 2)))
     Z = np.array(list(chunks(z, 2)))
-    print('X', X)
-    print('Y', Y)
-    print('Z', Z)
-
 
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.01, edgecolors='black', s=0.1)
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=5, edgecolors='black', s=0.1)
+
+
+def plot_samples_from_blender_fft_ifft():
+    f = open('/home/emil/workspace/GoneSurfingScripts/wave_samples.json')
+    data = json.load(f)
+    # Convert to the frequency domain using np
+    all_frequencies = np.fft.fft2(data['samples'][0])
+    lenX = len(all_frequencies)
+    lenY = len(all_frequencies[0])
+
+    # Convert back using my own implementation
+    ifft_samples = [[ ifft.ifft2(x, y, all_frequencies, lenX,lenY) for y in range(lenY)] for x in range(lenX)]
+    coordinates_data = np.array(data['coordinates'][0])
+    coordinates = np.array(flatten_2d_array(coordinates_data))
+    x = coordinates[:,0]
+    y = coordinates[:,1]
+    z = flatten_2d_array(ifft_samples)
+
+    X = np.array(list(chunks(x, 2)))
+    Y = np.array(list(chunks(y, 2)))
+    Z = np.array(list(chunks(z, 2)))
+
+    fig = plt.figure(figsize=plt.figaspect(0.5))
+    samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
+    samples_3d_plot.set_zlim3d(-20,50)
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=5, edgecolors='black', s=0.1)
+
+
+
 
 
 
@@ -119,6 +140,7 @@ def plot_fft_to_ifft():
 # plot_samples()
 # plot_fft_to_ifft()
 plot_samples_from_blender_sampling()
+plot_samples_from_blender_fft_ifft()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 

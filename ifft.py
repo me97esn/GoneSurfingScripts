@@ -1,6 +1,15 @@
 import numpy as np
 import datetime
 # https://numpy.org/doc/stable/reference/routines.fft.html
+
+def ifft2_include_all(x, y, fourierCoefficients, lenX, lenY):
+    result = 0.0j
+    for m in range(len(fourierCoefficients)):
+        for n in range(len(fourierCoefficients[0])):
+            fourierCoefficient = fourierCoefficients[m][n]
+            result = result + fourierCoefficient*np.exp(2*np.pi*1j*(m*x/lenX + n*y/lenY))/(lenX*lenY)
+    return result.real
+
 def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30, numberOfRowsToIncludeBottom=2, numberOfRowsToIncludeTop=10):
     """Note: lenX and lenY should be the total number of samples BEFORE subtracting the ignored frequencies"""
     result = 0.0j
