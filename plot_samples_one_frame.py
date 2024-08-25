@@ -9,6 +9,8 @@ from scipy.interpolate import griddata
 
 frame = 752
 
+plt.rcParams['figure.figsize'] = [40, 4]
+
 # X = np.array([[0, 1], [2, 3]])
 # Y = np.array([[0,1], [2,3]])
 # Z = np.array([[10,10],[20,20]])
@@ -102,11 +104,11 @@ def plot_samples_from_blender_fft_ifft():
     Z = np.array(list(chunks(z, 2)))
     Z2 = np.array(list(chunks(z2, 2)))
 
-    fig = plt.figure(figsize=plt.figaspect(0.5))
-    samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
+    fig = plt.figure()
+    samples_3d_plot = fig.add_subplot(1, 1, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
-    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=5, edgecolors='black', s=0.1)
-    samples_3d_plot.scatter(X, Y, Z2, marker='o', linewidths=5, edgecolors='red', s=0.1)
+    samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=5, edgecolors='black', s=1)
+    samples_3d_plot.scatter(X, Y, Z2, marker='o', linewidths=5, edgecolors='red', s=1)
 
 
 
@@ -143,7 +145,7 @@ def plot_fft_to_ifft():
 # plot_bobj_to_json_data()
 # plot_samples()
 # plot_fft_to_ifft()
-plot_samples_from_blender_sampling()
+# plot_samples_from_blender_sampling()
 plot_samples_from_blender_fft_ifft()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
