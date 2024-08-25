@@ -82,8 +82,9 @@ def plot_samples_from_blender_sampling():
 def plot_samples_from_blender_fft_ifft():
     f = open('/home/emil/workspace/GoneSurfingScripts/wave_samples.json')
     data = json.load(f)
+    data_samples = data['samples'][0]
     # Convert to the frequency domain using np
-    all_frequencies = np.fft.fft2(data['samples'][0])
+    all_frequencies = np.fft.fft2(data_samples)
     lenX = len(all_frequencies)
     lenY = len(all_frequencies[0])
 
@@ -94,15 +95,18 @@ def plot_samples_from_blender_fft_ifft():
     x = coordinates[:,0]
     y = coordinates[:,1]
     z = flatten_2d_array(ifft_samples)
+    z2 = flatten_2d_array(data_samples)
 
     X = np.array(list(chunks(x, 2)))
     Y = np.array(list(chunks(y, 2)))
     Z = np.array(list(chunks(z, 2)))
+    Z2 = np.array(list(chunks(z2, 2)))
 
     fig = plt.figure(figsize=plt.figaspect(0.5))
     samples_3d_plot = fig.add_subplot(1, 2, 1, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=5, edgecolors='black', s=0.1)
+    samples_3d_plot.scatter(X, Y, Z2, marker='o', linewidths=5, edgecolors='red', s=0.1)
 
 
 
