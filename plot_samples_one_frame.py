@@ -62,6 +62,9 @@ def flatten_2d_array(array):
     return [item for sublist in array for item in sublist]
 
 def plot_samples_from_blender_sampling():
+    """
+    This function can actually plot both the samples created from bobj files, and from the file created by running ray_cast in blender
+    """
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/dx-per-frame.json')
     data = json.load(f)['752']
     coordinates_data = np.array(data['coordinates'])
@@ -117,7 +120,25 @@ def plot_samples_from_blender_fft_ifft():
 
 
 def convert_3d_array_of_real_and_imaginary_to_complex_grid(real_and_imaginary_array):
-    return np.array([[[complex(real, imaginary) for real, imaginary in col] for col in row ] for row in real_and_imaginary_array])
+    """
+    real_and_imaginary_array: [
+        [
+            [
+                [182.5802234634454, 0.0], # complex number, real and imaginary part
+                [-10.198202656846245, 6.80804848440372], ...] # complex number, real and imaginary part
+            ] # column
+        ] # row
+
+    """
+    # print(np.array(real_and_imaginary_array))
+    # print('row: ',np.array(real_and_imaginary_array[0]))
+    # print('col: ',np.array(real_and_imaginary_array[0][0]))
+    # print('real: ',np.array(real_and_imaginary_array[0][0][0]))
+    # print('complex: ',np.array(real_and_imaginary_array[0][0][1]))
+
+    # [ print( row ) for row in real_and_imaginary_array]
+
+    return np.array([[complex(col[0], col[1]) for col in row ] for row in real_and_imaginary_array])
 
 
 # TODO: Should be able to plot the frequencies in the same way as the samples
@@ -127,7 +148,7 @@ def plot_fft_to_ifft():
 "frequencies_per_frame": [[[[182.5802234634454, 0.0], [-10.198202656846245, 6.80804848440372], 
     """
     print('------------ plot_fft_to_ifft ------------')
-    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_frequencies_stable.json')
+    f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_frequencies.json')
     frequencies_data = json.load(f)
 
 
@@ -162,8 +183,8 @@ def plot_fft_to_ifft():
 
 # plot_bobj_to_json_data()
 # plot_samples()
-# plot_fft_to_ifft()
-plot_samples_from_blender_sampling()
+plot_fft_to_ifft()
+# plot_samples_from_blender_sampling()
 # plot_samples_from_blender_fft_ifft()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
