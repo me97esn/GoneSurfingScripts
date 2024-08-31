@@ -101,14 +101,17 @@ def plot_samples_from_blender_fft_ifft():
     coordinates_data = np.array(data['coordinates'][0])
     coordinates = np.array(flatten_2d_array(coordinates_data))
     x = coordinates[:,0]
+    print('len(x)', len(x))
     y = coordinates[:,1]
-    z = flatten_2d_array(ifft_samples)
-    z2 = flatten_2d_array(data_samples)
+    print('len(y)', len(y))
+    z_ifft = flatten_2d_array(ifft_samples)
+    print('len(z_ifft)', len(z_ifft))
+    z_original = flatten_2d_array(data_samples)
 
     X = np.array(list(chunks(x, 2)))
     Y = np.array(list(chunks(y, 2)))
-    Z_ifft = np.array(list(chunks(z, 2)))
-    Z_original = np.array(list(chunks(z2, 2)))
+    Z_ifft = np.array(list(chunks(z_ifft, 2)))
+    Z_original = np.array(list(chunks(z_original, 2)))
 
     fig = plt.figure()
     samples_3d_plot = fig.add_subplot(1, 1, 1, projection='3d')
@@ -157,6 +160,9 @@ def plot_fft_to_ifft():
 
     frequencies_per_frame = frequencies_data['frequencies_per_frame']
     frequencies_first_frame = frequencies_per_frame[0]
+    shape = np.array(frequencies_first_frame).shape
+    print('shape of frequencies first frame', shape)
+
 
     # Frequencies for all frames
     freqs_complex = convert_3d_array_of_real_and_imaginary_to_complex_grid(frequencies_first_frame)
@@ -164,21 +170,22 @@ def plot_fft_to_ifft():
     lenX = int(frequencies_data['len_x']  )
     lenY = int(frequencies_data['len_y'] )
     Z = np.fft.ifft2( freqs_complex )
-    # _Z = [[ ifft.ifft2(x, y, frequencies_first_frame, lenX,lenY, number_of_frequencies_to_include, number_of_rows_to_include, number_of_rows_to_include ) for y in range(lenY)] for x in range(lenX)]
-    # Z_flat = flatten_2d_array(_Z)
 
+    # Create coordinates in the same way as for the samples
+    f_samples = open('/hdd/gone_surfing_exports/medium_wave_left/wave_samples.json')
+    data = json.load(f_samples)
 
-    # TODO: These coordinates aren't correct, 
-    x = np.linspace(-6, 6, lenX)
-    y = np.linspace(-6, 6, lenY)
+    coordinates_data = np.array(data['coordinates'][0])
+    coordinates = np.array(flatten_2d_array(coordinates_data))
+    x = coordinates[:,0]
+    y = coordinates[:,1]
+    print('len(y)', len(y))
 
-    X, Y = np.meshgrid(x, y)
-
-    # Z = np.array(list(chunks(_Z, 2)))
+    X = np.array(list(chunks(x, 2)))
+    Y = np.array(list(chunks(y, 2)))
 
     samples_3d_plot = plt.figure().add_subplot(111, projection='3d')
-
-
+    samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z)
 
 # plot_bobj_to_json_data()
