@@ -83,8 +83,8 @@ def plot_samples_from_blender_sampling():
     samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=5, edgecolors='black', s=0.1)
 
 
-def plot_samples_from_blender_fft_ifft():
-    print('------------ plot_samples_from_blender_fft_ifft ------------')
+def plot_wave_samples_json():
+    print('------------ plot_wave_samples_json ------------')
     f = open('/hdd/gone_surfing_exports/medium_wave_left/wave_samples.json')
     data = json.load(f)
     data_samples = data['samples'][0]
@@ -150,13 +150,12 @@ def coordinates_from_samples_file():
 
     return X, Y
 
-# TODO: Should be able to plot the frequencies in the same way as the samples
-def plot_fft_to_ifft():
+def plot_height_frequencies_json():
     """
     The data looks as the following: 
 "frequencies_per_frame": [[[[182.5802234634454, 0.0], [-10.198202656846245, 6.80804848440372], 
     """
-    print('------------ plot_fft_to_ifft ------------')
+    print('------------ plot_height_frequencies_json ------------')
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_frequencies.json')
     frequencies_data = json.load(f)
 
@@ -183,11 +182,31 @@ def plot_fft_to_ifft():
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z)
 
-# plot_bobj_to_json_data()
-# plot_samples()
-plot_fft_to_ifft()
-# plot_samples_from_blender_sampling()
-plot_samples_from_blender_fft_ifft()
+def plot_height_frequencies_struct_json():
+    print('------------ plot_height_frequencies_json ------------')
+    file = open('/hdd/gone_surfing_exports/medium_wave_left/height_frequencies_struct.json')
+    f = json.load(file)[0]['f']
+    freqs_complex_2d = []
+    for rowObj in f:
+        row = []
+        freqs_complex_2d.append(row)
+        for colObj in rowObj['arr']:
+            row.append(complex(colObj['re'], colObj['im']))
+
+
+    Z = np.fft.ifft2( freqs_complex_2d )
+
+    X, Y = coordinates_from_samples_file()
+
+    samples_3d_plot = plt.figure().add_subplot(111, projection='3d')
+    samples_3d_plot.set_zlim3d(-20,50)
+    samples_3d_plot.scatter(X, Y, Z)
+
+
+
+# plot_height_frequencies_json()
+# plot_wave_samples_json()
+plot_height_frequencies_struct_json()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
