@@ -85,7 +85,7 @@ def plot_samples_from_blender_sampling():
 
 def plot_samples_from_blender_fft_ifft():
     print('------------ plot_samples_from_blender_fft_ifft ------------')
-    f = open('/home/emil/workspace/GoneSurfingScripts/wave_samples.json')
+    f = open('/hdd/gone_surfing_exports/medium_wave_left/wave_samples.json')
     data = json.load(f)
     data_samples = data['samples'][0]
     # Convert to the frequency domain using np
@@ -185,7 +185,7 @@ def plot_fft_to_ifft():
 # plot_samples()
 plot_fft_to_ifft()
 # plot_samples_from_blender_sampling()
-# plot_samples_from_blender_fft_ifft()
+plot_samples_from_blender_fft_ifft()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
 
