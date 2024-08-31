@@ -98,18 +98,10 @@ def plot_samples_from_blender_fft_ifft():
     number_of_rows_to_include = 35
 
     ifft_samples = [[ ifft.ifft2(x, y, all_frequencies, lenX,lenY, number_of_frequencies_to_include,number_of_rows_to_include,number_of_rows_to_include) for y in range(lenY)] for x in range(lenX)]
-    coordinates_data = np.array(data['coordinates'][0])
-    coordinates = np.array(flatten_2d_array(coordinates_data))
-    x = coordinates[:,0]
-    print('len(x)', len(x))
-    y = coordinates[:,1]
-    print('len(y)', len(y))
+    X,Y = coordinates_from_samples_file()
     z_ifft = flatten_2d_array(ifft_samples)
-    print('len(z_ifft)', len(z_ifft))
     z_original = flatten_2d_array(data_samples)
 
-    X = np.array(list(chunks(x, 2)))
-    Y = np.array(list(chunks(y, 2)))
     Z_ifft = np.array(list(chunks(z_ifft, 2)))
     Z_original = np.array(list(chunks(z_original, 2)))
 
@@ -143,6 +135,20 @@ def convert_3d_array_of_real_and_imaginary_to_complex_grid(real_and_imaginary_ar
 
     return np.array([[complex(col[0], col[1]) for col in row ] for row in real_and_imaginary_array])
 
+def coordinates_from_samples_file():
+    f_samples = open('/hdd/gone_surfing_exports/medium_wave_left/wave_samples.json')
+    data = json.load(f_samples)
+
+    coordinates_data = np.array(data['coordinates'][0])
+    coordinates = np.array(flatten_2d_array(coordinates_data))
+    x = coordinates[:,0]
+    y = coordinates[:,1]
+    print('len(y)', len(y))
+
+    X = np.array(list(chunks(x, 2)))
+    Y = np.array(list(chunks(y, 2)))
+
+    return X, Y
 
 # TODO: Should be able to plot the frequencies in the same way as the samples
 def plot_fft_to_ifft():
@@ -171,18 +177,7 @@ def plot_fft_to_ifft():
     lenY = int(frequencies_data['len_y'] )
     Z = np.fft.ifft2( freqs_complex )
 
-    # Create coordinates in the same way as for the samples
-    f_samples = open('/hdd/gone_surfing_exports/medium_wave_left/wave_samples.json')
-    data = json.load(f_samples)
-
-    coordinates_data = np.array(data['coordinates'][0])
-    coordinates = np.array(flatten_2d_array(coordinates_data))
-    x = coordinates[:,0]
-    y = coordinates[:,1]
-    print('len(y)', len(y))
-
-    X = np.array(list(chunks(x, 2)))
-    Y = np.array(list(chunks(y, 2)))
+    X, Y = coordinates_from_samples_file()
 
     samples_3d_plot = plt.figure().add_subplot(111, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
