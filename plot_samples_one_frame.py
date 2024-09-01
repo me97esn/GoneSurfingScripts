@@ -143,7 +143,6 @@ def coordinates_from_samples_file():
     coordinates = np.array(flatten_2d_array(coordinates_data))
     x = coordinates[:,0]
     y = coordinates[:,1]
-    print('len(y)', len(y))
 
     X = np.array(list(chunks(x, 2)))
     Y = np.array(list(chunks(y, 2)))
@@ -193,14 +192,23 @@ def plot_height_frequencies_struct_json():
         for colObj in rowObj['arr']:
             row.append(complex(colObj['re'], colObj['im']))
 
-
+    # TODO: re-create the 3d plot using my own ifft implementation
     Z = np.fft.ifft2( freqs_complex_2d )
+    lenX = len(f)
+    print('lenX', lenX)
+    lenY = len(f[0]['arr'])
+    print('lenY', lenY)
+    Z2 = [ ifft.ifft2(x, y, freqs_complex_2d, lenX,lenY, 50,50,50) for y in range(lenY) for x in range(lenX)]
+
+    print('len Z2', len(Z2))
 
     X, Y = coordinates_from_samples_file()
+    Z2_pairs = np.array(Z2).reshape(np.array(X).shape)
 
     samples_3d_plot = plt.figure().add_subplot(111, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z)
+    samples_3d_plot.scatter(X, Y, Z2_pairs, color='red')
 
 
 
