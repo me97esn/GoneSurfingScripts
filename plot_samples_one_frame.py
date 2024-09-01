@@ -198,7 +198,7 @@ def plot_height_frequencies_struct_json():
     print('lenX', lenX)
     lenY = len(f[0]['arr'])
     print('lenY', lenY)
-    Z2 = [ ifft.ifft2(x, y, freqs_complex_2d, lenX,lenY, 50,50,50) for y in range(lenY) for x in range(lenX)]
+    Z2 = [ ifft.ifft2(x, y, freqs_complex_2d, lenX,lenY, 20,20,20) for y in range(lenY) for x in range(lenX)]
 
     print('len Z2', len(Z2))
 
@@ -208,7 +208,8 @@ def plot_height_frequencies_struct_json():
     samples_3d_plot = plt.figure().add_subplot(111, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z)
-    samples_3d_plot.scatter(X, Y, Z2_pairs, color='red')
+    # samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.1, edgecolors='black', s=0.1)
+    samples_3d_plot.scatter(X, Y, Z2_pairs, color='red', s=5)
 
 
 
