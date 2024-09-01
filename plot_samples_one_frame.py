@@ -112,6 +112,7 @@ def plot_wave_samples_json():
     # Plot the original and the ifft samples in the same plot
     samples_3d_plot.scatter(X, Y, Z_ifft, marker='o', linewidths=5, edgecolors='black', s=1)
     samples_3d_plot.scatter(X, Y, Z_original, marker='o', linewidths=5, edgecolors='red', s=1)
+    samples_3d_plot.set_title("Wave_samples.json -> np.fft -> my ifft implementation")
 
 
 def convert_3d_array_of_real_and_imaginary_to_complex_grid(real_and_imaginary_array):
@@ -154,7 +155,6 @@ def plot_height_frequencies_json():
     The data looks as the following: 
 "frequencies_per_frame": [[[[182.5802234634454, 0.0], [-10.198202656846245, 6.80804848440372], 
     """
-    print('------------ plot_height_frequencies_json ------------')
     f = open('/hdd/gone_surfing_exports/medium_wave_left/tmp_samples/height_frequencies.json')
     frequencies_data = json.load(f)
 
@@ -182,7 +182,6 @@ def plot_height_frequencies_json():
     samples_3d_plot.scatter(X, Y, Z)
 
 def plot_height_frequencies_struct_json():
-    print('------------ plot_height_frequencies_json ------------')
     file = open('/hdd/gone_surfing_exports/medium_wave_left/height_frequencies_struct.json')
     f = json.load(file)[0]['f']
     freqs_complex_2d = []
@@ -195,12 +194,8 @@ def plot_height_frequencies_struct_json():
     # TODO: re-create the 3d plot using my own ifft implementation
     Z = np.fft.ifft2( freqs_complex_2d )
     lenX = len(f)
-    print('lenX', lenX)
     lenY = len(f[0]['arr'])
-    print('lenY', lenY)
-    Z2 = [ ifft.ifft2(x, y, freqs_complex_2d, lenX,lenY, 20,20,20) for y in range(lenY) for x in range(lenX)]
-
-    print('len Z2', len(Z2))
+    Z2 = [ ifft.ifft2(x, y, freqs_complex_2d, lenX,lenY, 75,35,35) for y in range(lenY) for x in range(lenX)]
 
     X, Y = coordinates_from_samples_file()
     Z2_pairs = np.array(Z2).reshape(np.array(X).shape)
@@ -210,11 +205,12 @@ def plot_height_frequencies_struct_json():
     samples_3d_plot.scatter(X, Y, Z)
     # samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.1, edgecolors='black', s=0.1)
     samples_3d_plot.scatter(X, Y, Z2_pairs, color='red', s=5)
+    samples_3d_plot.set_title("height_frequencies_struct.json with np.ifft and my ifft implementation on top of each other")
 
 
 
 # plot_height_frequencies_json()
-# plot_wave_samples_json()
+plot_wave_samples_json()
 plot_height_frequencies_struct_json()
 
 # Split X, Y and Z into array of pairs, since that's what plot_surface expects
