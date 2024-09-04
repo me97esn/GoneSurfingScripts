@@ -96,7 +96,6 @@ def plot_wave_samples_json():
     number_of_frequencies_to_include = 75
     number_of_rows_to_include = 35
 
-    print('all_frequencies', all_frequencies)
     ifft_samples = [[ ifft.ifft2(x, y, all_frequencies, lenX,lenY, number_of_frequencies_to_include,number_of_rows_to_include,number_of_rows_to_include) for y in range(lenY)] for x in range(lenX)]
     X,Y = coordinates_from_samples_file()
     z_ifft = flatten_2d_array(ifft_samples)
@@ -192,12 +191,10 @@ def plot_height_frequencies_struct_json():
             row.append(complex(colObj['re'], colObj['im']))
 
     # TODO: re-create the 3d plot using my own ifft implementation
-    print('freqs_complex_2d', np.array(freqs_complex_2d))
     Z = np.fft.ifft2( freqs_complex_2d )
     lenX = len(f)
     lenY = len(f[0]['arr'])
     Z2 = [[ ifft.ifft2(x, y, freqs_complex_2d, lenX,lenY, 75,35,35) for y in range(lenY)] for x in range(lenX)]
-    print('Z2 shape',np.array(Z2).shape)
 
     X, Y = coordinates_from_samples_file()
 
