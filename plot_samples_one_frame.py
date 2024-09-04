@@ -84,7 +84,6 @@ def plot_samples_from_blender_sampling():
 
 
 def plot_wave_samples_json():
-    print('------------ plot_wave_samples_json ------------')
     f = open('/hdd/gone_surfing_exports/medium_wave_left/wave_samples.json')
     data = json.load(f)
     data_samples = data['samples'][0]
@@ -97,6 +96,7 @@ def plot_wave_samples_json():
     number_of_frequencies_to_include = 75
     number_of_rows_to_include = 35
 
+    print('all_frequencies', all_frequencies)
     ifft_samples = [[ ifft.ifft2(x, y, all_frequencies, lenX,lenY, number_of_frequencies_to_include,number_of_rows_to_include,number_of_rows_to_include) for y in range(lenY)] for x in range(lenX)]
     X,Y = coordinates_from_samples_file()
     z_ifft = flatten_2d_array(ifft_samples)
@@ -192,19 +192,30 @@ def plot_height_frequencies_struct_json():
             row.append(complex(colObj['re'], colObj['im']))
 
     # TODO: re-create the 3d plot using my own ifft implementation
+    print('freqs_complex_2d', np.array(freqs_complex_2d))
     Z = np.fft.ifft2( freqs_complex_2d )
     lenX = len(f)
     lenY = len(f[0]['arr'])
-    Z2 = [ ifft.ifft2(x, y, freqs_complex_2d, lenX,lenY, 75,35,35) for y in range(lenY) for x in range(lenX)]
+    Z2 = [[ ifft.ifft2(x, y, freqs_complex_2d, lenX,lenY, 75,35,35) for y in range(lenY)] for x in range(lenX)]
+    print('Z2 shape',np.array(Z2).shape)
 
     X, Y = coordinates_from_samples_file()
-    Z2_pairs = np.array(Z2).reshape(np.array(X).shape)
+
+    z_ifft = flatten_2d_array(Z2)
+
+    Z_ifft = np.array(list(chunks(z_ifft, 2)))
+
+
+
+
+
+    # Z2_pairs = np.array(Z2).reshape(np.array(X).shape)
 
     samples_3d_plot = plt.figure().add_subplot(111, projection='3d')
     samples_3d_plot.set_zlim3d(-20,50)
     samples_3d_plot.scatter(X, Y, Z)
     # samples_3d_plot.scatter(X, Y, Z, marker='o', linewidths=0.1, edgecolors='black', s=0.1)
-    samples_3d_plot.scatter(X, Y, Z2_pairs, color='red', s=5)
+    samples_3d_plot.scatter(X, Y, Z_ifft, color='red', s=5)
     samples_3d_plot.set_title("height_frequencies_struct.json with np.ifft and my ifft implementation on top of each other")
 
 
