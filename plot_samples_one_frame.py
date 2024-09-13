@@ -237,11 +237,11 @@ def print_height_at_coordinates(x, y):
     height = ifft.ifft2_with_interpolation(x, y, freqs_complex_2d, lenX,lenY)
     print('height at coordinates: %f, %f is %f' % (x, y, height))
 
-print_height_at_coordinates( -57.471939, 153.670105)
-print_height_at_coordinates( -57.471939, 152.123718)
 print_height_at_coordinates( -57, 153)
 print_height_at_coordinates( -57, 152)
 print_height_at_coordinates( -57, 154)
+print_height_at_coordinates( -57.471939, 153.670105)
+print_height_at_coordinates( -57.471939, 152.123718)
 # plot_height_frequencies_json()
 # plot_wave_samples_json()
 # plot_height_frequencies_struct_json()
