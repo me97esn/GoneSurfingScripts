@@ -37,12 +37,12 @@ def ifft2(x, y, fourierCoefficients, lenX, lenY, numberOfFrequenciesToInclude=30
     return result.real
 
 
-def ifft2_with_interpolation(x, y, fourierCoefficients, lenX, lenY):
-    # TODO: This function works as long as step size is 1. But it does not work for other step sizes and should be fixed
-    x0y0 = math.floor(x), math.floor(y), ifft2_include_all(math.floor(x), math.floor(y), fourierCoefficients, lenX, lenY)
-    x0y1 = math.floor(x), math.ceil(y), ifft2_include_all(math.floor(x), math.ceil(y), fourierCoefficients, lenX, lenY)
-    x1y0 = math.ceil(x), math.floor(y), ifft2_include_all(math.ceil(x), math.floor(y), fourierCoefficients, lenX, lenY)
-    x1y1 = math.ceil(x), math.ceil(y), ifft2_include_all(math.ceil(x), math.ceil(y), fourierCoefficients, lenX, lenY)
+def ifft2_with_interpolation(x, y, fourierCoefficients, lenX, lenY, step_size=1):
+    x0y0 = math.floor(x/step_size)*step_size, math.floor(y/step_size)*step_size, ifft2_include_all(math.floor(x/step_size)*step_size, math.floor(y/step_size)*step_size, fourierCoefficients, lenX, lenY)
+    x0y1 = math.floor(x/step_size)*step_size, math.ceil(y/step_size)*step_size, ifft2_include_all(math.floor(x/step_size)*step_size, math.ceil(y/step_size)*step_size, fourierCoefficients, lenX, lenY)
+    x1y0 = math.ceil(x/step_size)*step_size, math.floor(y/step_size)*step_size, ifft2_include_all(math.ceil(x/step_size)*step_size, math.floor(y/step_size)*step_size, fourierCoefficients, lenX, lenY)
+    x1y1 = math.ceil(x/step_size)*step_size, math.ceil(y/step_size)*step_size, ifft2_include_all(math.ceil(x/step_size)*step_size, math.ceil(y/step_size)*step_size, fourierCoefficients, lenX, lenY)
+
     points = [x0y0, x0y1, x1y0, x1y1]
 
     return bilinear_interpolation(x, y, points)
@@ -79,9 +79,20 @@ def bilinear_interpolation(x, y, points):
         raise ValueError('points do not form a rectangle')
     if not x1 <= x <= x2 or not y1 <= y <= y2:
         raise ValueError('(x, y) not within the rectangle')
-    if ((x2 - x1) * (y2 - y1) + 0.0) == 0:
-        # To avoid division by zero
+
+    # To avoid division by zero
+    if (x == x1 and y == y1):
         return q11
+    elif (x == x1 and y == y2):
+        return q12
+    elif (x == x2 and y == y1):
+        return q21
+    elif (x == x2 and y == y2):
+        return q22
+    elif( ((x2 - x1) * (y2 - y1) + 0.0) == 0):
+        # Safeguard, should not happen
+        return q11
+
     return (q11 * (x2 - x) * (y2 - y) +
             q21 * (x - x1) * (y2 - y) +
             q12 * (x2 - x) * (y - y1) +
